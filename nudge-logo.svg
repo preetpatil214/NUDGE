@@ -1,0 +1,12 @@
+<svg width="210" height="54" viewBox="0 0 210 54" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">nudge, made by Preet</title>
+  <defs>
+    <linearGradient id="n" x1="2" y1="4" x2="37" y2="38" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF648F"/><stop offset=".48" stop-color="#B26CFF"/><stop offset="1" stop-color="#55D9FF"/>
+    </linearGradient>
+  </defs>
+  <path d="M7 5C4.24 5 2 7.24 2 10V31C2 33.76 4.24 36 7 36H28C30.76 36 33 33.76 33 31V10C33 7.24 30.76 5 28 5H7Z" fill="#14152A" fill-opacity=".72" stroke="#FFFFFF" stroke-opacity=".28"/>
+  <path d="M9 20.5L15.4 26.7L26 14.6" stroke="url(#n)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="43" y="30.5" fill="#FFFFFF" font-family="Inter, SF Pro Display, Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="-1.6">nudge</text>
+  <text x="45" y="46" fill="#FFFFFF" fill-opacity=".57" font-family="Inter, SF Pro Text, Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing=".25">made by Preet</text>
+</svg>
