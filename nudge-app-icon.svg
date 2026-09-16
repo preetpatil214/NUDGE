@@ -1,0 +1,19 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">Nudge app icon</title>
+  <defs>
+    <linearGradient id="bg" x1="104" y1="74" x2="916" y2="965" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#171A38"/><stop offset=".48" stop-color="#332052"/><stop offset="1" stop-color="#0B4C73"/>
+    </linearGradient>
+    <radialGradient id="pink" cx="0" cy="0" r="1" gradientTransform="translate(218 839) rotate(-37) scale(704)"><stop stop-color="#FF4F78" stop-opacity=".96"/><stop offset="1" stop-color="#FF4F78" stop-opacity="0"/></radialGradient>
+    <radialGradient id="blue" cx="0" cy="0" r="1" gradientTransform="translate(862 734) rotate(145) scale(634)"><stop stop-color="#48CFFF" stop-opacity=".74"/><stop offset="1" stop-color="#48CFFF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="stroke" x1="294" y1="288" x2="748" y2="734" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7C9D"/><stop offset=".5" stop-color="#C182FF"/><stop offset="1" stop-color="#65E2FF"/></linearGradient>
+    <filter id="shadow" x="133" y="161" width="759" height="729" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="34"/></filter>
+  </defs>
+  <rect width="1024" height="1024" rx="232" fill="url(#bg)"/>
+  <rect width="1024" height="1024" rx="232" fill="url(#pink)"/>
+  <rect width="1024" height="1024" rx="232" fill="url(#blue)"/>
+  <rect x="32" y="32" width="960" height="960" rx="204" stroke="#FFFFFF" stroke-opacity=".14" stroke-width="4"/>
+  <path d="M300 519L456 675L733 373" stroke="#090B1D" stroke-opacity=".46" stroke-width="108" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)"/>
+  <path d="M300 499L456 655L733 353" stroke="url(#stroke)" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="737" cy="349" r="31" fill="#F8F5FF"/>
+</svg>
