@@ -10,15 +10,62 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Nudge" />
   <title>Nudge</title>
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/nudge-icon-192.png" />
-  <link rel="apple-touch-icon" href="/nudge-icon-192.png" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <img src="/nudge-logo.svg" alt="Nudge — made by Preet" class="nudge-logo" />
-  <img src="/bg.jpg" alt="App background" class="app-background" />
-  <button id="install-button" class="install-button" type="button">Install Nudge</button>
-  <script src="/app.js" defer></script>
+  <img src="bg.jpg" alt="" class="app-background" aria-hidden="true" />
+
+  <main class="page-shell">
+    <section class="setup-card" aria-labelledby="setup-title">
+      <span class="eyebrow">Study planner</span>
+      <h1 id="setup-title">Set up your next nudge.</h1>
+
+      <p class="intro">
+        Tell Nudge what you are working toward and turn your syllabus into focused steps.
+      </p>
+
+      <form class="study-form">
+        <label for="name">Your name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Enter your name"
+          autocomplete="name"
+        />
+
+        <label for="exam">Exam name</label>
+        <input
+          id="exam"
+          name="exam"
+          type="text"
+          placeholder="e.g. JEE Main 2026"
+        />
+
+        <label for="subject">Subject</label>
+        <input
+          id="subject"
+          name="subject"
+          type="text"
+          placeholder="e.g. Physics"
+        />
+
+        <label for="chapters">
+          Chapters <span>for this subject</span>
+        </label>
+        <textarea
+          id="chapters"
+          name="chapters"
+          rows="4"
+          placeholder="e.g. Kinematics, Laws of Motion, Work & Energy"
+        ></textarea>
+
+        <button type="submit">
+          Create my study plan <span aria-hidden="true">→</span>
+        </button>
+      </form>
+    </section>
+  </main>
 </body>
 </html>
