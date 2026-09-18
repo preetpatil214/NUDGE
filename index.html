@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,10 +22,9 @@
     html,
     body {
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       margin: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .app-background {
@@ -38,20 +38,22 @@
 
     .nudge-study-screen {
       display: grid;
-      position: relative;
-      min-height: 100dvh;
-      padding: max(24px, env(safe-area-inset-top)) 24px
-        max(24px, env(safe-area-inset-bottom));
+      position: fixed;
+      inset: 0;
+      padding: max(14px, env(safe-area-inset-top)) 18px
+        max(14px, env(safe-area-inset-bottom));
       place-items: center;
     }
 
     .nudge-study-card {
-      box-sizing: border-box;
-      width: min(100%, 412px);
-      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      width: min(100%, 420px);
+      max-height: calc(100dvh - 28px);
+      padding: clamp(18px, 5vw, 28px);
       border: 1px solid rgba(255, 255, 255, 0.27);
       border-radius: 26px;
-      background: rgba(17, 20, 38, 0.48);
+      background: rgba(17, 20, 38, 0.5);
       box-shadow:
         0 18px 55px rgba(0, 0, 0, 0.38),
         inset 0 1px 0 rgba(255, 255, 255, 0.18);
@@ -61,35 +63,34 @@
     }
 
     .nudge-study-card h1 {
-      margin: 0 0 6px;
-      font-size: clamp(25px, 7vw, 34px);
+      margin: 0 0 5px;
+      font-size: clamp(23px, 7vw, 32px);
       line-height: 1.1;
     }
 
-    .nudge-study-card p {
-      margin: 0 0 16px;
+    .nudge-study-card > p {
+      margin: 0 0 13px;
       color: rgba(255, 255, 255, 0.72);
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.4;
     }
 
     .nudge-study-form {
       display: grid;
-      gap: 8px;
+      gap: 7px;
+      min-height: 0;
     }
 
     .nudge-study-form label {
-      margin-top: 4px;
+      margin-top: 3px;
       color: rgba(255, 255, 255, 0.9);
       font-size: 13px;
       font-weight: 600;
     }
 
-    .nudge-study-form input,
-    .nudge-study-form textarea {
-      box-sizing: border-box;
+    .nudge-study-form input {
       width: 100%;
-      padding: 12px 13px;
+      padding: 11px 12px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
       outline: none;
@@ -98,148 +99,174 @@
       font: inherit;
     }
 
-    .chapter-entry-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-    }
-
-    .chapter-entry-row button {
-      margin: 0;
-      padding: 0 15px;
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      background: rgba(255, 255, 255, 0.12);
-      color: white;
-    }
-
-    .chapter-list {
-      display: grid;
-      gap: 8px;
-      min-height: 0;
-      margin-top: 2px;
-    }
-
-    .subject-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .subject-card {
-      display: grid;
-      gap: 8px;
-      padding: 14px;
-      border: 1px solid rgba(214, 207, 255, 0.28);
-      border-radius: 16px;
-      background: rgba(8, 10, 28, 0.24);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    }
-
-    .subject-card h2 {
-      margin: 0 0 2px;
-      color: white;
-      font-size: 16px;
-      line-height: 1.25;
-    }
-
-    .subject-card > label {
-      margin-top: 0;
-    }
-
-    .chapter-item {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      box-sizing: border-box;
-      width: 100%;
-      padding: 12px 13px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.2);
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 14px;
-    }
-
-    .chapter-item input {
-      box-sizing: border-box;
-      width: 18px;
-      height: 18px;
-      margin: 0;
-      accent-color: #9c95ff;
-    }
-
-    .nudge-study-form input::placeholder,
-    .nudge-study-form textarea::placeholder {
+    .nudge-study-form input::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }
 
-    .nudge-study-form input:focus,
-    .nudge-study-form textarea:focus {
+    .nudge-study-form input:focus {
       border-color: #aaa6ff;
       box-shadow: 0 0 0 3px rgba(154, 148, 255, 0.24);
     }
 
-    .nudge-study-form textarea {
-      min-height: 70px;
-      resize: none;
+    .field-with-button {
+      display: flex;
+      gap: 8px;
     }
 
-    .nudge-study-form button {
-      box-sizing: border-box;
-      margin-top: 8px;
-      padding: 13px;
-      border: 1px solid rgba(214, 207, 255, 0.42);
+    .field-with-button input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .add-button {
+      flex-shrink: 0;
+      padding: 0 14px;
+      border: 0;
       border-radius: 12px;
-      background: linear-gradient(
-        120deg,
-        rgba(116, 111, 221, 0.52),
-        rgba(201, 119, 208, 0.4)
-      );
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.26),
-        0 8px 20px rgba(8, 9, 28, 0.2);
+      background: linear-gradient(100deg, #2f4f7a, #f17272);
+      color: white;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .add-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    .active-subject-text {
+      min-height: 16px;
+      margin: 0;
+      color: #c5c2ff;
+      font-size: 12px;
+    }
+
+    .subject-plan-list {
+      display: grid;
+      gap: 7px;
+      max-height: 150px;
+      padding-right: 3px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .subject-item {
+      padding: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 13px;
+      background: rgba(0, 0, 0, 0.16);
+      cursor: pointer;
+    }
+
+    .subject-item.active {
+      border-color: #aaa6ff;
+      background: rgba(128, 120, 255, 0.16);
+    }
+
+    .subject-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .subject-title {
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .remove-button {
+      flex-shrink: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .chapter-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 7px;
+    }
+
+    .chapter-chip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+    }
+
+    .chapter-chip button {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .empty-chapter-text {
+      margin-top: 7px;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 11px;
+    }
+
+    .form-message {
+      min-height: 16px;
+      margin: 0;
+      color: #ffb2b2;
+      font-size: 12px;
+    }
+
+    .create-plan-button {
+      margin-top: 2px;
+      padding: 12px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(100deg, #2f4f7a, #f17272);
       color: white;
       cursor: pointer;
       font: inherit;
       font-weight: 700;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      transition: transform 160ms ease, background 160ms ease;
     }
 
-    .nudge-study-form button:hover {
-      background: linear-gradient(
-        120deg,
-        rgba(137, 132, 243, 0.62),
-        rgba(221, 135, 225, 0.5)
-      );
-      transform: translateY(-1px);
-    }
-
-    .chapter-entry-row button {
-      margin: 0;
-      padding: 0 15px;
-    }
-
-    @media (max-height: 680px) {
+    @media (max-height: 690px) {
       .nudge-study-card {
-        padding: 16px 20px;
+        padding: 15px 18px;
       }
 
       .nudge-study-card h1 {
-        font-size: 25px;
+        font-size: 23px;
       }
 
-      .nudge-study-card p {
-        margin-bottom: 8px;
+      .nudge-study-card > p {
+        margin-bottom: 7px;
       }
 
-      .nudge-study-form input,
-      .nudge-study-form textarea {
-        padding: 9px 11px;
+      .nudge-study-form {
+        gap: 5px;
       }
 
-      .nudge-study-screen { padding: 16px 20px; }
+      .nudge-study-form input {
+        padding: 8px 10px;
+      }
+
+      .subject-plan-list {
+        max-height: 110px;
+      }
     }
   </style>
 </head>
@@ -251,9 +278,9 @@
   <main class="nudge-study-screen">
     <section class="nudge-study-card">
       <h1>Create your study plan</h1>
-      <p>Enter your exam details and subjects to get started.</p>
+      <p>Add each subject and its chapters before creating your plan.</p>
 
-      <form class="nudge-study-form">
+      <form class="nudge-study-form" id="study-form">
         <label for="student-name">Your name</label>
         <input
           id="student-name"
@@ -269,25 +296,288 @@
           placeholder="Example: JEE Main 2026"
         />
 
-        <label for="subject-entry" id="subject-entry-label">Add a subject</label>
-        <div class="chapter-entry-row">
+        <label for="subject-name">Subject</label>
+        <div class="field-with-button">
           <input
-            id="subject-entry"
+            id="subject-name"
             type="text"
             placeholder="Example: Physics"
-            autocomplete="off"
           />
-          <button type="button" id="add-subject">Add</button>
+          <button id="add-subject-button" class="add-button" type="button">
+            Add Subject
+          </button>
         </div>
-        <div class="subject-list" id="subject-list" aria-live="polite"></div>
 
-        <button type="submit">Create Plan →</button>
+        <p id="active-subject-text" class="active-subject-text">
+          Add a subject first, then add its chapters.
+        </p>
+
+        <label for="chapter-name">Chapter</label>
+        <div class="field-with-button">
+          <input
+            id="chapter-name"
+            type="text"
+            placeholder="Example: Kinematics"
+            disabled
+          />
+          <button
+            id="add-chapter-button"
+            class="add-button"
+            type="button"
+            disabled
+          >
+            Add Chapter
+          </button>
+        </div>
+
+        <div id="subject-plan-list" class="subject-plan-list"></div>
+        <p id="form-message" class="form-message"></p>
+
+        <button class="create-plan-button" type="submit">
+          Create Plan →
+        </button>
       </form>
     </section>
   </main>
 
   
+  <script>
+    const studyForm = document.getElementById("study-form");
+    const subjectInput = document.getElementById("subject-name");
+    const chapterInput = document.getElementById("chapter-name");
+    const addSubjectButton = document.getElementById("add-subject-button");
+    const addChapterButton = document.getElementById("add-chapter-button");
+    const subjectPlanList = document.getElementById("subject-plan-list");
+    const activeSubjectText = document.getElementById("active-subject-text");
+    const formMessage = document.getElementById("form-message");
 
-  <script src="/app.js?v=5" defer></script>
+    const studySubjects = [];
+    let activeSubjectIndex = -1;
+
+    function updateActiveSubject() {
+      const hasActiveSubject = activeSubjectIndex >= 0;
+
+      chapterInput.disabled = !hasActiveSubject;
+      addChapterButton.disabled = !hasActiveSubject;
+
+      if (hasActiveSubject) {
+        activeSubjectText.textContent =
+          `Adding chapters to: ${studySubjects[activeSubjectIndex].name}`;
+      } else {
+        activeSubjectText.textContent =
+          "Add a subject first, then add its chapters.";
+      }
+    }
+
+    function selectSubject(index) {
+      activeSubjectIndex = index;
+      formMessage.textContent = "";
+      updateActiveSubject();
+      renderSubjects();
+      chapterInput.focus();
+    }
+
+    function renderSubjects() {
+      subjectPlanList.innerHTML = "";
+
+      studySubjects.forEach((subject, subjectIndex) => {
+        const subjectItem = document.createElement("div");
+        subjectItem.className = "subject-item";
+
+        if (subjectIndex === activeSubjectIndex) {
+          subjectItem.classList.add("active");
+        }
+
+        const topRow = document.createElement("div");
+        topRow.className = "subject-item-top";
+
+        const title = document.createElement("span");
+        title.className = "subject-title";
+        title.textContent = subject.name;
+
+        const removeSubject = document.createElement("button");
+        removeSubject.className = "remove-button";
+        removeSubject.type = "button";
+        removeSubject.textContent = "×";
+        removeSubject.setAttribute("aria-label", `Remove ${subject.name}`);
+
+        removeSubject.addEventListener("click", (event) => {
+          event.stopPropagation();
+
+          studySubjects.splice(subjectIndex, 1);
+
+          if (studySubjects.length === 0) {
+            activeSubjectIndex = -1;
+          } else if (activeSubjectIndex >= studySubjects.length) {
+            activeSubjectIndex = studySubjects.length - 1;
+          }
+
+          updateActiveSubject();
+          renderSubjects();
+        });
+
+        topRow.append(title, removeSubject);
+        subjectItem.appendChild(topRow);
+
+        if (subject.chapters.length === 0) {
+          const emptyText = document.createElement("div");
+          emptyText.className = "empty-chapter-text";
+          emptyText.textContent = "No chapters added yet.";
+          subjectItem.appendChild(emptyText);
+        } else {
+          const chapterList = document.createElement("div");
+          chapterList.className = "chapter-list";
+
+          subject.chapters.forEach((chapter, chapterIndex) => {
+            const chapterChip = document.createElement("div");
+            chapterChip.className = "chapter-chip";
+
+            const chapterText = document.createElement("span");
+            chapterText.textContent = chapter;
+
+            const removeChapter = document.createElement("button");
+            removeChapter.type = "button";
+            removeChapter.textContent = "×";
+            removeChapter.setAttribute("aria-label", `Remove ${chapter}`);
+
+            removeChapter.addEventListener("click", (event) => {
+              event.stopPropagation();
+              subject.chapters.splice(chapterIndex, 1);
+              renderSubjects();
+            });
+
+            chapterChip.append(chapterText, removeChapter);
+            chapterList.appendChild(chapterChip);
+          });
+
+          subjectItem.appendChild(chapterList);
+        }
+
+        subjectItem.addEventListener("click", () => selectSubject(subjectIndex));
+        subjectPlanList.appendChild(subjectItem);
+      });
+    }
+
+    function addSubject() {
+      const subjectName = subjectInput.value.trim();
+
+      if (!subjectName) {
+        formMessage.textContent = "Enter a subject name first.";
+        subjectInput.focus();
+        return;
+      }
+
+      const isDuplicate = studySubjects.some(
+        (subject) => subject.name.toLowerCase() === subjectName.toLowerCase()
+      );
+
+      if (isDuplicate) {
+        formMessage.textContent = "This subject is already added.";
+        return;
+      }
+
+      studySubjects.push({
+        name: subjectName,
+        chapters: []
+      });
+
+      activeSubjectIndex = studySubjects.length - 1;
+      subjectInput.value = "";
+      formMessage.textContent = "";
+
+      updateActiveSubject();
+      renderSubjects();
+      chapterInput.focus();
+    }
+
+    function addChapter() {
+      const chapterName = chapterInput.value.trim();
+
+      if (activeSubjectIndex === -1) {
+        formMessage.textContent = "Add a subject before adding a chapter.";
+        return;
+      }
+
+      if (!chapterName) {
+        formMessage.textContent = "Enter a chapter name first.";
+        chapterInput.focus();
+        return;
+      }
+
+      const activeSubject = studySubjects[activeSubjectIndex];
+
+      const isDuplicate = activeSubject.chapters.some(
+        (chapter) => chapter.toLowerCase() === chapterName.toLowerCase()
+      );
+
+      if (isDuplicate) {
+        formMessage.textContent = "This chapter is already added.";
+        return;
+      }
+
+      activeSubject.chapters.push(chapterName);
+      chapterInput.value = "";
+      formMessage.textContent = "";
+      renderSubjects();
+      chapterInput.focus();
+    }
+
+    addSubjectButton.addEventListener("click", addSubject);
+    addChapterButton.addEventListener("click", addChapter);
+
+    subjectInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        addSubject();
+      }
+    });
+
+    chapterInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        addChapter();
+      }
+    });
+
+    studyForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const studentName = document.getElementById("student-name").value.trim();
+      const examName = document.getElementById("exam-name").value.trim();
+
+      if (!studentName || !examName) {
+        formMessage.textContent = "Enter your name and exam name first.";
+        return;
+      }
+
+      if (studySubjects.length === 0) {
+        formMessage.textContent = "Add at least one subject first.";
+        return;
+      }
+
+      const subjectWithoutChapters = studySubjects.find(
+        (subject) => subject.chapters.length === 0
+      );
+
+      if (subjectWithoutChapters) {
+        formMessage.textContent =
+          `Add at least one chapter for ${subjectWithoutChapters.name}.`;
+        return;
+      }
+
+      formMessage.style.color = "#baffca";
+      formMessage.textContent = "Plan created successfully!";
+
+      console.log({
+        studentName,
+        examName,
+        subjects: studySubjects
+      });
+    });
+
+    updateActiveSubject();
+  </script>
+
+  <script src="/app.js" defer></script>
 </body>
 </html>
