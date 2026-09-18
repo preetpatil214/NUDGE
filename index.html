@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,62 +11,188 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Nudge" />
   <title>Nudge</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/nudge-icon-192.png" />
+  <link rel="apple-touch-icon" href="/nudge-icon-192.png" />
+  <link rel="stylesheet" href="/style.css" />
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .app-background {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nudge-study-screen {
+      display: grid;
+      position: fixed;
+      inset: 0;
+      padding: max(16px, env(safe-area-inset-top)) 20px
+        max(16px, env(safe-area-inset-bottom));
+      place-items: center;
+    }
+
+    .nudge-study-card {
+      width: min(100%, 390px);
+      padding: clamp(20px, 5vw, 30px);
+      border: 1px solid rgba(255, 255, 255, 0.27);
+      border-radius: 26px;
+      background: rgba(17, 20, 38, 0.48);
+      box-shadow:
+        0 18px 55px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      color: white;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .nudge-study-card h1 {
+      margin: 0 0 6px;
+      font-size: clamp(25px, 7vw, 34px);
+      line-height: 1.1;
+    }
+
+    .nudge-study-card p {
+      margin: 0 0 16px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .nudge-study-form {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nudge-study-form label {
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nudge-study-form input,
+    .nudge-study-form textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      outline: none;
+      background: rgba(0, 0, 0, 0.2);
+      color: white;
+      font: inherit;
+    }
+
+    .nudge-study-form input::placeholder,
+    .nudge-study-form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nudge-study-form input:focus,
+    .nudge-study-form textarea:focus {
+      border-color: #aaa6ff;
+      box-shadow: 0 0 0 3px rgba(154, 148, 255, 0.24);
+    }
+
+    .nudge-study-form textarea {
+      min-height: 70px;
+      resize: none;
+    }
+
+    .nudge-study-form button {
+      margin-top: 8px;
+      padding: 13px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(100deg, #9c95ff, #cf84f6);
+      color: #141326;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    @media (max-height: 680px) {
+      .nudge-study-card {
+        padding: 16px 20px;
+      }
+
+      .nudge-study-card h1 {
+        font-size: 25px;
+      }
+
+      .nudge-study-card p {
+        margin-bottom: 8px;
+      }
+
+      .nudge-study-form input,
+      .nudge-study-form textarea {
+        padding: 9px 11px;
+      }
+
+      .nudge-study-form textarea {
+        min-height: 55px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <img src="bg.jpg" alt="" class="app-background" aria-hidden="true" />
+  <img src="/nudge-logo.svg" alt="Nudge — made by Preet" class="nudge-logo" />
+  <img src="/bg.jpg" alt="App background" class="app-background" />
 
-  <main class="page-shell">
-    <section class="setup-card" aria-labelledby="setup-title">
-      <span class="eyebrow">Study planner</span>
-      <h1 id="setup-title">Set up your next nudge.</h1>
+  <main class="nudge-study-screen">
+    <section class="nudge-study-card">
+      <h1>Create your study plan</h1>
+      <p>Enter your exam details and subjects to get started.</p>
 
-      <p class="intro">
-        Tell Nudge what you are working toward and turn your syllabus into focused steps.
-      </p>
-
-      <form class="study-form">
-        <label for="name">Your name</label>
+      <form class="nudge-study-form">
+        <label for="student-name">Your name</label>
         <input
-          id="name"
-          name="name"
+          id="student-name"
           type="text"
           placeholder="Enter your name"
           autocomplete="name"
         />
 
-        <label for="exam">Exam name</label>
+        <label for="exam-name">Exam name</label>
         <input
-          id="exam"
-          name="exam"
+          id="exam-name"
           type="text"
-          placeholder="e.g. JEE Main 2026"
+          placeholder="Example: JEE Main 2026"
         />
 
-        <label for="subject">Subject</label>
+        <label for="subject-name">Subject</label>
         <input
-          id="subject"
-          name="subject"
+          id="subject-name"
           type="text"
-          placeholder="e.g. Physics"
+          placeholder="Example: Physics"
         />
 
-        <label for="chapters">
-          Chapters <span>for this subject</span>
-        </label>
+        <label for="chapters">Chapters for this subject</label>
         <textarea
           id="chapters"
-          name="chapters"
-          rows="4"
-          placeholder="e.g. Kinematics, Laws of Motion, Work & Energy"
+          placeholder="Example: Kinematics, Thermodynamics, Optics"
         ></textarea>
 
-        <button type="submit">
-          Create my study plan <span aria-hidden="true">→</span>
-        </button>
+        <button type="submit">Create Plan →</button>
       </form>
     </section>
   </main>
+
+  
+
+  <script src="/app.js" defer></script>
 </body>
 </html>
