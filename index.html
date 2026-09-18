@@ -21,9 +21,10 @@
     html,
     body {
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .app-background {
@@ -37,16 +38,17 @@
 
     .nudge-study-screen {
       display: grid;
-      position: fixed;
-      inset: 0;
-      padding: max(16px, env(safe-area-inset-top)) 20px
-        max(16px, env(safe-area-inset-bottom));
+      position: relative;
+      min-height: 100dvh;
+      padding: max(24px, env(safe-area-inset-top)) 24px
+        max(24px, env(safe-area-inset-bottom));
       place-items: center;
     }
 
     .nudge-study-card {
-      width: min(100%, 390px);
-      padding: clamp(20px, 5vw, 30px);
+      box-sizing: border-box;
+      width: min(100%, 412px);
+      padding: 28px 24px;
       border: 1px solid rgba(255, 255, 255, 0.27);
       border-radius: 26px;
       background: rgba(17, 20, 38, 0.48);
@@ -85,6 +87,7 @@
 
     .nudge-study-form input,
     .nudge-study-form textarea {
+      box-sizing: border-box;
       width: 100%;
       padding: 12px 13px;
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -93,6 +96,75 @@
       background: rgba(0, 0, 0, 0.2);
       color: white;
       font: inherit;
+    }
+
+    .chapter-entry-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    .chapter-entry-row button {
+      margin: 0;
+      padding: 0 15px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+
+    .chapter-list {
+      display: grid;
+      gap: 8px;
+      min-height: 0;
+      margin-top: 2px;
+    }
+
+    .subject-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .subject-card {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border: 1px solid rgba(214, 207, 255, 0.28);
+      border-radius: 16px;
+      background: rgba(8, 10, 28, 0.24);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .subject-card h2 {
+      margin: 0 0 2px;
+      color: white;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .subject-card > label {
+      margin-top: 0;
+    }
+
+    .chapter-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.2);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+    }
+
+    .chapter-item input {
+      box-sizing: border-box;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: #9c95ff;
     }
 
     .nudge-study-form input::placeholder,
@@ -112,15 +184,41 @@
     }
 
     .nudge-study-form button {
+      box-sizing: border-box;
       margin-top: 8px;
       padding: 13px;
-      border: 0;
+      border: 1px solid rgba(214, 207, 255, 0.42);
       border-radius: 12px;
-      background: linear-gradient(100deg, #9c95ff, #cf84f6);
-      color: #141326;
+      background: linear-gradient(
+        120deg,
+        rgba(116, 111, 221, 0.52),
+        rgba(201, 119, 208, 0.4)
+      );
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.26),
+        0 8px 20px rgba(8, 9, 28, 0.2);
+      color: white;
       cursor: pointer;
       font: inherit;
       font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: transform 160ms ease, background 160ms ease;
+    }
+
+    .nudge-study-form button:hover {
+      background: linear-gradient(
+        120deg,
+        rgba(137, 132, 243, 0.62),
+        rgba(221, 135, 225, 0.5)
+      );
+      transform: translateY(-1px);
+    }
+
+    .chapter-entry-row button {
+      margin: 0;
+      padding: 0 15px;
     }
 
     @media (max-height: 680px) {
@@ -141,9 +239,7 @@
         padding: 9px 11px;
       }
 
-      .nudge-study-form textarea {
-        min-height: 55px;
-      }
+      .nudge-study-screen { padding: 16px 20px; }
     }
   </style>
 </head>
@@ -173,18 +269,17 @@
           placeholder="Example: JEE Main 2026"
         />
 
-        <label for="subject-name">Subject</label>
-        <input
-          id="subject-name"
-          type="text"
-          placeholder="Example: Physics"
-        />
-
-        <label for="chapters">Chapters for this subject</label>
-        <textarea
-          id="chapters"
-          placeholder="Example: Kinematics, Thermodynamics, Optics"
-        ></textarea>
+        <label for="subject-entry" id="subject-entry-label">Add a subject</label>
+        <div class="chapter-entry-row">
+          <input
+            id="subject-entry"
+            type="text"
+            placeholder="Example: Physics"
+            autocomplete="off"
+          />
+          <button type="button" id="add-subject">Add</button>
+        </div>
+        <div class="subject-list" id="subject-list" aria-live="polite"></div>
 
         <button type="submit">Create Plan →</button>
       </form>
@@ -193,6 +288,6 @@
 
   
 
-  <script src="/app.js" defer></script>
+  <script src="/app.js?v=5" defer></script>
 </body>
 </html>
