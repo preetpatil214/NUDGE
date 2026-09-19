@@ -57,7 +57,7 @@
       <a class="brand" href="main.html" aria-label="Nudge home"><img src="nudge-logo.svg" alt="Nudge" /></a>
       <p class="welcome" id="welcome-name"></p>
     </header>
-    <h1 class="page-title" id="page-title">Your exams</h1>
+    <h1 class="page-title" id="page-title">Your academic overview</h1>
     <section class="exam-list" id="exam-list" aria-live="polite"></section>
     <a class="add-exam-button" href="index.html?add-exam=1">Add exam</a>
   </main>
@@ -75,8 +75,6 @@
       } catch (error) { return []; }
     }
     const plans = getPlans();
-    const pageTitle = document.getElementById("page-title");
-    pageTitle.textContent = plans[0]?.examName || "Your exams";
     welcomeName.textContent = plans[0]?.studentName ? `Hey, ${plans[0].studentName} !` : "";
     if (!plans.length) examList.innerHTML = '<p class="empty-state">No exams added yet.</p>';
     plans.forEach((plan) => {
