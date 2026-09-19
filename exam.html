@@ -46,6 +46,13 @@
         transition: transform 160ms ease, filter 160ms ease;
       }
       .manage-exam-button:hover, .manage-exam-button:focus-visible { transform: translateY(-2px); filter: brightness(1.12); }
+      .remove-exam-button {
+        display: inline-flex; margin: 0 0 20px 6px; padding: 9px 14px; border: 1px solid rgba(255,130,170,.28);
+        border-radius: 999px; background: rgba(110,32,75,.2); color: rgba(255,190,210,.9);
+        cursor: pointer; font: inherit; font-size: 12px; font-weight: 700;
+        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+      }
+      .remove-exam-button:hover, .remove-exam-button:focus-visible { transform: translateY(-2px); border-color: rgba(255,130,170,.58); background: rgba(150,45,90,.3); }
     .subject-card {
       position: relative; isolation: isolate; padding: 17px; border: 1px solid rgba(255,255,255,.22); border-radius: 22px;
       background: transparent; box-shadow: 0 8px 20px rgba(7,5,22,.2), inset 0 1px rgba(255,255,255,.1);
@@ -57,12 +64,22 @@
       filter: blur(18px); opacity: .78;
     }
     .subject-card h2 { margin: 0 0 12px; font-size: 19px; }
+    .subject-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .subject-heading h2 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .remove-subject-button, .remove-chapter-button {
+      flex: 0 0 auto; border: 0; background: transparent; color: rgba(255,190,210,.72); cursor: pointer;
+      font: inherit; font-weight: 700; transition: color 160ms ease, transform 160ms ease;
+    }
+    .remove-subject-button { padding: 3px 0; font-size: 12px; }
+    .remove-chapter-button { padding: 0 0 0 4px; font-size: 15px; line-height: 1; }
+    .remove-subject-button:hover, .remove-subject-button:focus-visible, .remove-chapter-button:hover, .remove-chapter-button:focus-visible { color: #ffd4e1; transform: scale(1.08); }
     .chapter-list { display: grid; gap: 8px; }
     .chapter-item {
       display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 12px;
       background: rgba(8,10,23,.3); color: rgba(255,255,255,.86); font-size: 14px;
       transition: background 160ms ease, color 160ms ease;
     }
+    .chapter-item span { flex: 1; min-width: 0; }
     .chapter-item input {
       appearance: none; flex: 0 0 19px; width: 19px; height: 19px; margin: 0;
       border: 1px solid rgba(255,255,255,.5); border-radius: 6px; background: rgba(255,255,255,.08);
@@ -106,7 +123,13 @@
     }
 
     const examIndex = Number.parseInt(new URLSearchParams(window.location.search).get("exam"), 10);
-    const plan = getPlans()[examIndex];
+    const plans = getPlans();
+    const plan = plans[examIndex];
+
+    function savePlans() {
+      localStorage.setItem(plansKey, JSON.stringify(plans));
+      localStorage.removeItem(legacyKey);
+    }
 
     if (!plan) {
       detail.className = "missing-state";
@@ -130,6 +153,18 @@
       manageButton.textContent = "Add subjects / chapters";
       detail.appendChild(manageButton);
 
+      const removeExamButton = document.createElement("button");
+      removeExamButton.className = "remove-exam-button";
+      removeExamButton.type = "button";
+      removeExamButton.textContent = "Remove exam";
+      removeExamButton.addEventListener("click", () => {
+        if (!window.confirm(`Remove ${plan.examName || "this exam"}?`)) return;
+        plans.splice(examIndex, 1);
+        savePlans();
+        window.location.replace("main.html");
+      });
+      detail.appendChild(removeExamButton);
+
       const progressStatus = document.createElement("div");
       progressStatus.className = "progress-status";
       progressStatus.innerHTML = '<div class="progress-label"><span>Chapter progress</span><span class="progress-count">0 / 0</span></div><div class="progress-track"><div class="progress-fill"></div></div>';
@@ -144,12 +179,26 @@
         progressCount.textContent = `${completed} / ${chapterCount}`;
         progressFill.style.width = chapterCount ? `${(completed / chapterCount) * 100}%` : "0%";
       };
-      subjects.forEach((subject) => {
+      subjects.forEach((subject, subjectIndex) => {
         const subjectCard = document.createElement("article");
         subjectCard.className = "subject-card";
+        const subjectHeading = document.createElement("div");
+        subjectHeading.className = "subject-heading";
         const subjectTitle = document.createElement("h2");
         subjectTitle.textContent = subject.name || "Untitled subject";
-        subjectCard.appendChild(subjectTitle);
+        const removeSubjectButton = document.createElement("button");
+        removeSubjectButton.className = "remove-subject-button";
+        removeSubjectButton.type = "button";
+        removeSubjectButton.textContent = "Remove";
+        removeSubjectButton.setAttribute("aria-label", `Remove ${subject.name || "subject"}`);
+        removeSubjectButton.addEventListener("click", () => {
+          if (!window.confirm(`Remove ${subject.name || "this subject"} and its chapters?`)) return;
+          plan.subjects.splice(subjectIndex, 1);
+          savePlans();
+          window.location.reload();
+        });
+        subjectHeading.append(subjectTitle, removeSubjectButton);
+        subjectCard.appendChild(subjectHeading);
 
         const chapters = Array.isArray(subject.chapters) ? subject.chapters : [];
         if (!chapters.length) {
@@ -168,7 +217,20 @@
             checkbox.addEventListener("change", updateProgress);
             const chapterText = document.createElement("span");
             chapterText.textContent = chapter;
-            label.append(checkbox, chapterText);
+            const removeChapterButton = document.createElement("button");
+            removeChapterButton.className = "remove-chapter-button";
+            removeChapterButton.type = "button";
+            removeChapterButton.textContent = "×";
+            removeChapterButton.setAttribute("aria-label", `Remove ${chapter}`);
+            removeChapterButton.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              if (!window.confirm(`Remove ${chapter}?`)) return;
+              subject.chapters.splice(chapterIndex, 1);
+              savePlans();
+              window.location.reload();
+            });
+            label.append(checkbox, chapterText, removeChapterButton);
             chapterList.appendChild(label);
           });
           subjectCard.appendChild(chapterList);

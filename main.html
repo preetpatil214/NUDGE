@@ -44,12 +44,37 @@
     .subject-chip { padding: 6px 9px; border-radius: 999px; background: rgba(169,163,255,.2); color: #e6e4ff; font-size: 12px; font-weight: 600; }
     .add-exam-button {
       display: block; width: fit-content; margin: 28px auto 0; padding: 11px 26px;
-      border: 2px solid rgba(255,255,255,.88); border-radius: 13px; background: rgba(8,10,23,.48);
-      color: white; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+      border: 1px solid rgba(255,255,255,.38); border-radius: 999px;
+      background: linear-gradient(110deg, rgba(234,72,151,.24), rgba(144,113,255,.2) 52%, rgba(61,185,222,.24));
+      color: rgba(255,255,255,.92); font: inherit; font-weight: 700; text-decoration: none; cursor: pointer;
+      box-shadow: 0 7px 18px rgba(7,5,22,.2), inset 0 1px rgba(255,255,255,.12);
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease, filter 160ms ease;
     }
-    .add-exam-button:hover, .add-exam-button:focus-visible { background: linear-gradient(110deg, rgba(234, 72, 151, .58), rgba(144, 113, 255, .42) 48%, rgba(61, 185, 222, .52)); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(144, 113, 255, .28); }
+    .add-exam-button:hover, .add-exam-button:focus-visible { background: linear-gradient(110deg, rgba(234,72,151,.38), rgba(144,113,255,.32) 52%, rgba(61,185,222,.38)); transform: translateY(-2px); box-shadow: 0 9px 22px rgba(144,113,255,.24), inset 0 1px rgba(255,255,255,.18); filter: brightness(1.08); }
     .add-exam-button:active { transform: scale(.98); }
-    .empty-state { color: rgba(255,255,255,.7); text-align: center; }
+    .empty-state {
+      position: relative; margin: 22px 0 0; padding: 8px 4px 14px; overflow: hidden;
+      color: transparent; font-size: 16px; font-style: italic; font-weight: 600; text-align: center;
+      background: linear-gradient(110deg, #f09ac8, #b9adff 52%, #a9d9e8, #f09ac8);
+      background-size: 220% auto; -webkit-background-clip: text; background-clip: text;
+      animation: empty-state-shimmer 5s ease-in-out infinite;
+    }
+    .empty-state::after {
+      content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 2px;
+      border-radius: 999px; background: linear-gradient(90deg, #ea4897, #9071ff 52%, #3db9de);
+      opacity: .54; filter: blur(2px); animation: empty-state-glow 3.6s ease-in-out infinite;
+    }
+    @keyframes empty-state-shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes empty-state-glow {
+      0%, 100% { opacity: .32; transform: scaleX(.72); }
+      50% { opacity: .72; transform: scaleX(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .empty-state, .empty-state::after { animation: none; }
+    }
     @media (max-width: 412px) {
       .dashboard { width: 100%; padding-inline: 18px; }
       .topbar { gap: 12px; margin-bottom: 24px; }

@@ -76,6 +76,27 @@
       opacity: .68;
     }
 
+    .form-back-link {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+      padding: 7px 11px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      background: rgba(8,10,23,.28);
+      color: rgba(255,255,255,.84);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: inset 0 1px rgba(255,255,255,.1);
+      transition: transform 160ms ease, color 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .form-back-link::before { content: "←"; color: #c9c1ff; font-size: 15px; line-height: 1; }
+    .form-back-link:hover, .form-back-link:focus-visible { transform: translateX(-2px); border-color: rgba(185,173,255,.62); background: rgba(144,113,255,.18); color: #fff; }
+
     .nudge-study-card h1 {
       margin: 0 0 5px;
       font-size: clamp(23px, 7vw, 32px);
@@ -338,6 +359,7 @@
 
   <main class="nudge-study-screen">
     <section class="nudge-study-card">
+      <a class="form-back-link" id="form-back-link" href="main.html" hidden>Back</a>
       <h1>Create your study plan</h1>
       <p>Add each subject and its chapters before creating your plan.</p>
 
@@ -409,6 +431,7 @@
     const isAddingExam = queryParams.has("add-exam");
     const editExamIndex = Number.parseInt(queryParams.get("edit"), 10);
     const isEditingExam = Number.isInteger(editExamIndex) && editExamIndex >= 0;
+    document.getElementById("form-back-link").hidden = !isAddingExam;
 
     try {
       if (!isAddingExam && (localStorage.getItem(STUDY_PLANS_STORAGE_KEY) || localStorage.getItem(STUDY_PLAN_STORAGE_KEY))) {
@@ -450,13 +473,11 @@
       }
     }
 
-    if (isAddingExam) {
-      const savedStudentName = getSavedStudentName();
-      if (savedStudentName) {
-        studentNameInput.value = savedStudentName;
-        studentNameInput.hidden = true;
-        document.querySelector('label[for="student-name"]').hidden = true;
-      }
+    const savedStudentName = getSavedStudentName();
+    if (savedStudentName) {
+      studentNameInput.value = savedStudentName;
+      studentNameInput.hidden = true;
+      document.querySelector('label[for="student-name"]').hidden = true;
     }
 
     if (isEditingExam) {
