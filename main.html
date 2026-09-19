@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111426" />
+  <title>Nudge</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { min-height: 100%; margin: 0; }
+    body {
+      min-height: 100dvh; color: #fff; font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(rgba(6, 8, 20, .62), rgba(6, 8, 20, .38)), url("bg.jpg") center / cover fixed;
+    }
+    .dashboard {
+      width: min(100%, 500px); min-height: 100dvh; margin: auto;
+      padding: max(22px, env(safe-area-inset-top)) 20px max(30px, env(safe-area-inset-bottom));
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+    .brand img { display: block; width: 112px; height: auto; }
+    .welcome { margin: 0; color: rgba(255,255,255,.88); font-size: 14px; font-weight: 700; text-align: right; }
+    .page-title { margin: 0 0 16px; font-size: clamp(26px, 7vw, 34px); }
+    .exam-list { display: grid; gap: 13px; }
+    .exam-card {
+      padding: 18px; border: 2px solid rgba(255,255,255,.82); border-radius: 24px;
+      background: rgba(5,7,17,.66); box-shadow: 0 10px 25px rgba(0,0,0,.2), inset 0 1px rgba(255,255,255,.12);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .exam-card h2 { margin: 0 0 11px; font-size: 19px; }
+    .exam-card p { margin: 0; color: rgba(255,255,255,.73); font-size: 14px; line-height: 1.5; }
+    .subject-preview { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+    .subject-chip { padding: 6px 9px; border-radius: 999px; background: rgba(169,163,255,.2); color: #e6e4ff; font-size: 12px; font-weight: 600; }
+    .add-exam-button {
+      display: block; width: fit-content; margin: 28px auto 0; padding: 11px 26px;
+      border: 2px solid rgba(255,255,255,.88); border-radius: 13px; background: rgba(8,10,23,.48);
+      color: white; font: inherit; font-weight: 700; text-decoration: none; transition: transform 160ms ease, background 160ms ease;
+    }
+    .add-exam-button:hover, .add-exam-button:focus-visible { background: rgba(135,125,255,.28); transform: translateY(-2px); }
+    .empty-state { color: rgba(255,255,255,.7); text-align: center; }
+  </style>
+</head>
+<body>
+  <main class="dashboard">
+    <header class="topbar">
+      <a class="brand" href="main.html" aria-label="Nudge home"><img src="nudge-logo.svg" alt="Nudge" /></a>
+      <p class="welcome" id="welcome-name"></p>
+    </header>
+    <h1 class="page-title">Your exams</h1>
+    <section class="exam-list" id="exam-list" aria-live="polite"></section>
+    <a class="add-exam-button" href="index.html?add-exam=1">Add exam</a>
+  </main>
+  <script>
+    const legacyKey = "nudge-study-plan";
+    const plansKey = "nudge-study-plans";
+    const examList = document.getElementById("exam-list");
+    const welcomeName = document.getElementById("welcome-name");
+    function getPlans() {
+      try {
+        const savedPlans = JSON.parse(localStorage.getItem(plansKey) || "[]");
+        if (Array.isArray(savedPlans) && savedPlans.length) return savedPlans;
+        const legacyPlan = JSON.parse(localStorage.getItem(legacyKey) || "null");
+        return legacyPlan ? [legacyPlan] : [];
+      } catch (error) { return []; }
+    }
+    const plans = getPlans();
+    welcomeName.textContent = plans[0]?.studentName ? `Hi, ${plans[0].studentName}` : "";
+    if (!plans.length) examList.innerHTML = '<p class="empty-state">No exams added yet.</p>';
+    plans.forEach((plan) => {
+      const card = document.createElement("article"); card.className = "exam-card";
+      const title = document.createElement("h2"); title.textContent = plan.examName || "Untitled exam";
+      const subjects = Array.isArray(plan.subjects) ? plan.subjects : [];
+      const chapterCount = subjects.reduce((total, subject) => total + (subject.chapters?.length || 0), 0);
+      const summary = document.createElement("p");
+      summary.textContent = `${subjects.length} subject${subjects.length === 1 ? "" : "s"} · ${chapterCount} chapter${chapterCount === 1 ? "" : "s"}`;
+      const preview = document.createElement("div"); preview.className = "subject-preview";
+      subjects.forEach((subject) => {
+        const chip = document.createElement("span"); chip.className = "subject-chip"; chip.textContent = subject.name; preview.appendChild(chip);
+      });
+      card.append(title, summary, preview); examList.appendChild(card);
+    });
+  </script>
+</body>
+</html>

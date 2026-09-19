@@ -1,8 +1,9 @@
 // Change this version whenever the cached app shell or assets change.
-const CACHE_VERSION = 'nudge-v5';
+const CACHE_VERSION = 'nudge-v7';
 const APP_SHELL = [
   '/',
   '/index.html',
+  '/main.html',
   '/style.css',
   '/app.js',
   '/manifest.webmanifest',
