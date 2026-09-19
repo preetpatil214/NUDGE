@@ -19,7 +19,7 @@
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
     .brand img { display: block; width: 150px; height: auto; }
     .welcome { margin: 0; color: rgba(255,255,255,.88); font-size: 14px; font-weight: 700; text-align: right;margin-right:10px }
-    .page-title { margin: 0 0 16px; font-size: clamp(24px, 6vw, 17px); font-style:italic}
+    .page-title { margin: 0 0 16px; font-size:17px; font-style:italic; font-weight:600; background: linear-gradient(110deg, #f09ac8, #b9adff 52%, #a9d9e8); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .exam-list { display: grid; gap: 13px; }
     .exam-card {
       position: relative; isolation: isolate; padding: 18px; border: 2px solid rgba(255,255,255,.82); border-radius: 24px;
@@ -49,6 +49,14 @@
     .add-exam-button:hover, .add-exam-button:focus-visible { background: linear-gradient(110deg, rgba(234, 72, 151, .58), rgba(144, 113, 255, .42) 48%, rgba(61, 185, 222, .52)); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(144, 113, 255, .28); }
     .add-exam-button:active { transform: scale(.98); }
     .empty-state { color: rgba(255,255,255,.7); text-align: center; }
+    @media (max-width: 412px) {
+      .dashboard { width: 100%; padding-inline: 18px; }
+      .topbar { gap: 12px; margin-bottom: 24px; }
+      .brand img { width: 142px; }
+      .welcome { font-size: 13px; margin-right: 0; }
+      .exam-card { padding: 17px; }
+      .add-exam-button { margin-top: 26px; }
+    }
   </style>
 </head>
 <body>
