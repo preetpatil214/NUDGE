@@ -10,7 +10,7 @@
       animation: nudge-install-fade 220ms ease-out both;
     }
     .nudge-install-dialog {
-      position: relative; width: min(100%, 340px); padding: 24px 22px 20px;
+      position: relative; width: min(100%, 340px); max-height: calc(100dvh - 44px); overflow-y: auto; padding: 24px 22px 20px;
       border: 1px solid rgba(255,255,255,.22); border-radius: 22px;
       background: linear-gradient(145deg, rgba(36, 25, 65, .94), rgba(17, 35, 68, .94));
       box-shadow: 0 18px 55px rgba(0,0,0,.42), 0 0 28px rgba(144,113,255,.2), inset 0 1px rgba(255,255,255,.12);
@@ -24,7 +24,7 @@
     .nudge-install-kicker { margin: 0 0 8px; color: #c9c1ff; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
     .nudge-install-dialog h2 { margin: 0 0 8px; font-size: 22px; line-height: 1.15; }
     .nudge-install-dialog p { margin: 0 0 18px; color: rgba(255,255,255,.72); font-size: 13px; line-height: 1.45; }
-    .nudge-install-actions { display: flex; gap: 9px; justify-content: flex-end; }
+    .nudge-install-actions { display: flex; flex-wrap: wrap; gap: 9px; justify-content: flex-end; }
     .nudge-install-actions button { border: 0; border-radius: 999px; padding: 10px 15px; color: #fff; cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; }
     .nudge-install-dismiss { background: rgba(255,255,255,.1); }
     .nudge-install-confirm { background: linear-gradient(110deg, rgba(234,72,151,.72), rgba(144,113,255,.68) 52%, rgba(61,185,222,.72)); box-shadow: 0 6px 16px rgba(7,5,22,.24), inset 0 1px rgba(255,255,255,.16); }
@@ -85,4 +85,12 @@
     deferredPrompt = null;
     closeInstallPrompt(document.querySelector(".nudge-install-backdrop"));
   });
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch((error) => {
+        console.error("Nudge service worker registration failed:", error);
+      });
+    });
+  }
 })();
