@@ -161,7 +161,6 @@
       removeExamButton.type = "button";
       removeExamButton.textContent = "Remove exam";
       removeExamButton.addEventListener("click", () => {
-        if (!window.confirm(`Remove ${plan.examName || "this exam"}?`)) return;
         plans.splice(examIndex, 1);
         savePlans();
         window.location.replace("main.html");
@@ -195,7 +194,6 @@
         removeSubjectButton.textContent = "Remove";
         removeSubjectButton.setAttribute("aria-label", `Remove ${subject.name || "subject"}`);
         removeSubjectButton.addEventListener("click", () => {
-          if (!window.confirm(`Remove ${subject.name || "this subject"} and its chapters?`)) return;
           plan.subjects.splice(subjectIndex, 1);
           savePlans();
           window.location.reload();
@@ -228,7 +226,6 @@
             removeChapterButton.addEventListener("click", (event) => {
               event.preventDefault();
               event.stopPropagation();
-              if (!window.confirm(`Remove ${chapter}?`)) return;
               subject.chapters.splice(chapterIndex, 1);
               savePlans();
               window.location.reload();

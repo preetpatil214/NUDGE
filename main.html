@@ -12,11 +12,11 @@
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body { min-height: 100%; margin: 0; }
     body {
-      min-height: 100dvh; color: #fff; font-family: Inter, Arial, sans-serif;
+      min-height: 100dvh; overflow: hidden; color: #fff; font-family: Inter, Arial, sans-serif;
       background: linear-gradient(rgba(6, 8, 20, .62), rgba(6, 8, 20, .38)), url("bg.jpg") center / cover fixed;
     }
     .dashboard {
-      width: min(100%, 500px); min-height: 100dvh; margin: auto;
+      width: min(100%, 500px); height: 100dvh; margin: auto; overflow-y: auto; overscroll-behavior-y: contain;
       padding: max(22px, env(safe-area-inset-top)) 20px max(30px, env(safe-area-inset-bottom));
     }
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
