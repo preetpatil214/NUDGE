@@ -473,7 +473,7 @@
     }
 
     const savedStudentName = getSavedStudentName();
-    document.getElementById("form-back-link").hidden = !(isAddingExam && savedStudentName);
+    document.getElementById("form-back-link").hidden = !isEditingExam;
     if (savedStudentName) {
       studentNameInput.value = savedStudentName;
       studentNameInput.hidden = true;
