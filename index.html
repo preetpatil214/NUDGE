@@ -431,7 +431,6 @@
     const isAddingExam = queryParams.has("add-exam");
     const editExamIndex = Number.parseInt(queryParams.get("edit"), 10);
     const isEditingExam = Number.isInteger(editExamIndex) && editExamIndex >= 0;
-    document.getElementById("form-back-link").hidden = !isAddingExam;
 
     try {
       if (!isAddingExam && (localStorage.getItem(STUDY_PLANS_STORAGE_KEY) || localStorage.getItem(STUDY_PLAN_STORAGE_KEY))) {
@@ -474,6 +473,7 @@
     }
 
     const savedStudentName = getSavedStudentName();
+    document.getElementById("form-back-link").hidden = !(isAddingExam && savedStudentName);
     if (savedStudentName) {
       studentNameInput.value = savedStudentName;
       studentNameInput.hidden = true;
