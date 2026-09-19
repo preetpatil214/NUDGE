@@ -1,6 +1,17 @@
 (() => {
   let deferredPrompt;
 
+  document.documentElement.style.touchAction = "pan-y";
+  document.addEventListener("gesturestart", (event) => event.preventDefault(), { passive: false });
+  document.addEventListener("gesturechange", (event) => event.preventDefault(), { passive: false });
+  document.addEventListener("gestureend", (event) => event.preventDefault(), { passive: false });
+  document.addEventListener("touchmove", (event) => {
+    if (event.touches.length > 1) event.preventDefault();
+  }, { passive: false });
+  document.addEventListener("wheel", (event) => {
+    if (event.ctrlKey || event.metaKey) event.preventDefault();
+  }, { passive: false });
+
   const style = document.createElement("style");
   style.textContent = `
     .nudge-install-backdrop {
