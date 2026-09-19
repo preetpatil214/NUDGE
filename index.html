@@ -54,7 +54,7 @@
       max-height: calc(100dvh - 28px);
       padding: clamp(18px, 5vw, 28px);
       box-sizing: border-box;
-      border: 2px solid rgba(255, 255, 255, 0.62);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 24px;
       background: rgba(22, 27, 58, 0.58);
       box-shadow:
@@ -71,9 +71,9 @@
       z-index: -1;
       inset: 10px -4px -8px;
       border-radius: inherit;
-      background: linear-gradient(110deg, rgba(234, 72, 151, .28), rgba(144, 113, 255, .22) 48%, rgba(61, 185, 222, .28));
-      filter: blur(22px);
-      opacity: .72;
+      background: linear-gradient(110deg, rgba(234, 72, 151, .32), rgba(144, 113, 255, .24) 48%, rgba(61, 185, 222, .3));
+      filter: blur(20px);
+      opacity: .68;
     }
 
     .nudge-study-card h1 {
@@ -136,14 +136,15 @@
     .add-button {
       flex-shrink: 0;
       padding: 0 14px;
-      border: 1px solid rgba(255, 255, 255, .58);
+      border: 0;
       border-radius: 13px;
-      background: linear-gradient(110deg, rgba(234, 72, 151, .34), rgba(144, 113, 255, .28) 48%, rgba(61, 185, 222, .34));
+      background: linear-gradient(110deg, rgba(234, 72, 151, .42), rgba(144, 113, 255, .34) 48%, rgba(61, 185, 222, .42));
       color: white;
       cursor: pointer;
       font: inherit;
       font-size: 13px;
       font-weight: 700;
+      box-shadow: 0 5px 14px rgba(7, 5, 22, .2), inset 0 1px rgba(255, 255, 255, .14);
       transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
     }
 
@@ -269,13 +270,14 @@
     .create-plan-button {
       margin-top: 2px;
       padding: 12px;
-      border: 1px solid rgba(255, 255, 255, .58);
+      border: 0;
       border-radius: 13px;
-      background: linear-gradient(110deg, rgba(234, 72, 151, .34), rgba(144, 113, 255, .28) 48%, rgba(61, 185, 222, .34));
+      background: linear-gradient(110deg, rgba(234, 72, 151, .42), rgba(144, 113, 255, .34) 48%, rgba(61, 185, 222, .42));
       color: white;
       cursor: pointer;
       font: inherit;
       font-weight: 700;
+      box-shadow: 0 7px 18px rgba(7, 5, 22, .22), inset 0 1px rgba(255, 255, 255, .14);
       transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
     }
 
@@ -381,7 +383,7 @@
         <p id="form-message" class="form-message"></p>
 
         <button class="create-plan-button" type="submit">
-          Create Plan →
+           Get started 
         </button>
       </form>
     </section>
