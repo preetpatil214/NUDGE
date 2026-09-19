@@ -17,15 +17,26 @@
       padding: max(22px, env(safe-area-inset-top)) 20px max(30px, env(safe-area-inset-bottom));
     }
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
-    .brand img { display: block; width: 112px; height: auto; }
-    .welcome { margin: 0; color: rgba(255,255,255,.88); font-size: 14px; font-weight: 700; text-align: right; }
-    .page-title { margin: 0 0 16px; font-size: clamp(26px, 7vw, 34px); }
+    .brand img { display: block; width: 150px; height: auto; }
+    .welcome { margin: 0; color: rgba(255,255,255,.88); font-size: 14px; font-weight: 700; text-align: right;margin-right:10px }
+    .page-title { margin: 0 0 16px; font-size: clamp(24px, 6vw, 22px); font-style:italic}
     .exam-list { display: grid; gap: 13px; }
     .exam-card {
-      padding: 18px; border: 2px solid rgba(255,255,255,.82); border-radius: 24px;
-      background: rgba(5,7,17,.66); box-shadow: 0 10px 25px rgba(0,0,0,.2), inset 0 1px rgba(255,255,255,.12);
+      position: relative; isolation: isolate; padding: 18px; border: 2px solid rgba(255,255,255,.82); border-radius: 24px;
+      background: rgba(55, 64, 114, 0.275); box-shadow: 0 10px 24px rgba(7, 5, 22, .24), inset 0 1px rgba(255,255,255,.12);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
+    .exam-card::before {
+      content: ""; position: absolute; z-index: -1; inset: 7px -5px -7px;
+      border-radius: inherit; background: linear-gradient(110deg, rgba(234, 72, 151, .58), rgba(144, 113, 255, .42) 48%, rgba(61, 185, 222, .52));
+      filter: blur(18px); opacity: .82; transition: opacity 180ms ease, filter 180ms ease;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .exam-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+      .exam-card:hover { transform: translateY(-4px); box-shadow: 0 16px 30px rgba(7, 5, 22, .34), inset 0 1px rgba(255,255,255,.18); }
+      .exam-card:hover::before { opacity: 1; filter: blur(22px); }
+    }
+    .exam-card:active { transform: scale(.985); }
     .exam-card h2 { margin: 0 0 11px; font-size: 19px; }
     .exam-card p { margin: 0; color: rgba(255,255,255,.73); font-size: 14px; line-height: 1.5; }
     .subject-preview { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
@@ -33,9 +44,10 @@
     .add-exam-button {
       display: block; width: fit-content; margin: 28px auto 0; padding: 11px 26px;
       border: 2px solid rgba(255,255,255,.88); border-radius: 13px; background: rgba(8,10,23,.48);
-      color: white; font: inherit; font-weight: 700; text-decoration: none; transition: transform 160ms ease, background 160ms ease;
+      color: white; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
     }
-    .add-exam-button:hover, .add-exam-button:focus-visible { background: rgba(135,125,255,.28); transform: translateY(-2px); }
+    .add-exam-button:hover, .add-exam-button:focus-visible { background: linear-gradient(110deg, rgba(234, 72, 151, .58), rgba(144, 113, 255, .42) 48%, rgba(61, 185, 222, .52)); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(144, 113, 255, .28); }
+    .add-exam-button:active { transform: scale(.98); }
     .empty-state { color: rgba(255,255,255,.7); text-align: center; }
   </style>
 </head>
@@ -65,7 +77,7 @@
     const plans = getPlans();
     const pageTitle = document.getElementById("page-title");
     pageTitle.textContent = plans[0]?.examName || "Your exams";
-    welcomeName.textContent = plans[0]?.studentName ? `Hey, ${plans[0].studentName} ,!` : "";
+    welcomeName.textContent = plans[0]?.studentName ? `Hey, ${plans[0].studentName} !` : "";
     if (!plans.length) examList.innerHTML = '<p class="empty-state">No exams added yet.</p>';
     plans.forEach((plan) => {
       const card = document.createElement("article"); card.className = "exam-card";

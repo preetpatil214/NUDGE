@@ -125,12 +125,24 @@
       padding: 0 14px;
       border: 0;
       border-radius: 12px;
-      background: linear-gradient(100deg, #2f4f7a, #f17272);
+      background: linear-gradient(110deg, rgba(234, 72, 151, .58), rgba(144, 113, 255, .42) 48%, rgba(61, 185, 222, .52));
       color: white;
       cursor: pointer;
       font: inherit;
       font-size: 13px;
       font-weight: 700;
+      transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    }
+
+    .add-button:hover:not(:disabled),
+    .add-button:focus-visible:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(144, 113, 255, .28);
+      filter: brightness(1.12);
+    }
+
+    .add-button:active:not(:disabled) {
+      transform: scale(.98);
     }
 
     .add-button:disabled {
@@ -246,11 +258,23 @@
       padding: 12px;
       border: 0;
       border-radius: 12px;
-      background: linear-gradient(100deg, #2f4f7a, #f17272);
+      background: linear-gradient(110deg, rgba(234, 72, 151, .58), rgba(144, 113, 255, .42) 48%, rgba(61, 185, 222, .52));
       color: white;
       cursor: pointer;
       font: inherit;
       font-weight: 700;
+      transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    }
+
+    .create-plan-button:hover,
+    .create-plan-button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(144, 113, 255, .28);
+      filter: brightness(1.12);
+    }
+
+    .create-plan-button:active {
+      transform: scale(.98);
     }
 
     @media (max-height: 690px) {
@@ -372,6 +396,28 @@
     const subjectPlanList = document.getElementById("subject-plan-list");
     const activeSubjectText = document.getElementById("active-subject-text");
     const formMessage = document.getElementById("form-message");
+    const studentNameInput = document.getElementById("student-name");
+
+    function getSavedStudentName() {
+      try {
+        const savedPlans = JSON.parse(localStorage.getItem(STUDY_PLANS_STORAGE_KEY) || "[]");
+        const plans = Array.isArray(savedPlans) ? savedPlans : [];
+        const legacyPlan = JSON.parse(localStorage.getItem(STUDY_PLAN_STORAGE_KEY) || "null");
+        const allPlans = plans.length ? plans : (legacyPlan ? [legacyPlan] : []);
+        return allPlans.find((plan) => plan?.studentName)?.studentName || "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+    if (isAddingExam) {
+      const savedStudentName = getSavedStudentName();
+      if (savedStudentName) {
+        studentNameInput.value = savedStudentName;
+        studentNameInput.hidden = true;
+        document.querySelector('label[for="student-name"]').hidden = true;
+      }
+    }
 
     const studySubjects = [];
     let activeSubjectIndex = -1;
