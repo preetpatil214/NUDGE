@@ -75,6 +75,13 @@
       border-radius: 999px; background: linear-gradient(90deg, #ea4897, #9071ff 52%, #3db9de);
       opacity: .54; filter: blur(2px); animation: empty-state-glow 3.6s ease-in-out infinite;
     }
+    @media (orientation: landscape) {
+      body::after {
+        content: "Please turn your phone upright to use Nudge";
+        position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px;
+        background: #090b19; color: #c9c1ff; font-size: 16px; font-weight: 700; text-align: center;
+      }
+    }
     @keyframes empty-state-shimmer {
       0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
