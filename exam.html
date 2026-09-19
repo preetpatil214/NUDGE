@@ -209,7 +209,7 @@
         } else {
           const chapterList = document.createElement("div");
           chapterList.className = "chapter-list";
-          chapters.forEach((chapter) => {
+          chapters.forEach((chapter, chapterIndex) => {
             const label = document.createElement("label");
             label.className = "chapter-item";
             const checkbox = document.createElement("input");
