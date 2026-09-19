@@ -22,7 +22,7 @@
     .page-title { margin: 0 0 16px; font-size:17px; font-style:italic; font-weight:600; background: linear-gradient(110deg, #f09ac8, #b9adff 52%, #a9d9e8); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .exam-list { display: grid; gap: 13px; }
     .exam-card {
-      position: relative; isolation: isolate; padding: 18px; border: 2px solid rgba(255,255,255,.82); border-radius: 24px;
+      position: relative; isolation: isolate; padding: 18px; border: 2px solid rgba(255,255,255,.82); border-radius: 24px; cursor: pointer;
       background: rgba(55, 64, 114, 0.275); box-shadow: 0 10px 24px rgba(7, 5, 22, .24), inset 0 1px rgba(255,255,255,.12);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
@@ -37,6 +37,7 @@
       .exam-card:hover::before { opacity: 1; filter: blur(22px); }
     }
     .exam-card:active { transform: scale(.985); }
+    .exam-card:focus-visible { outline: 2px solid #b9adff; outline-offset: 4px; }
     .exam-card h2 { margin: 0 0 11px; font-size: 19px; }
     .exam-card p { margin: 0; color: rgba(255,255,255,.73); font-size: 14px; line-height: 1.5; }
     .subject-preview { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
@@ -87,6 +88,18 @@
     if (!plans.length) examList.innerHTML = '<p class="empty-state">No exams added yet.</p>';
     plans.forEach((plan) => {
       const card = document.createElement("article"); card.className = "exam-card";
+      const planIndex = plans.indexOf(plan);
+      card.tabIndex = 0;
+      card.setAttribute("role", "link");
+      card.setAttribute("aria-label", `Open ${plan.examName || "exam"}`);
+      const openExam = () => { window.location.href = `exam.html?exam=${planIndex}`; };
+      card.addEventListener("click", openExam);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openExam();
+        }
+      });
       const title = document.createElement("h2"); title.textContent = plan.examName || "Untitled exam";
       const subjects = Array.isArray(plan.subjects) ? plan.subjects : [];
       const chapterCount = subjects.reduce((total, subject) => total + (subject.chapters?.length || 0), 0);

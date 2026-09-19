@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111426" />
+  <title>Exam details | Nudge</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { min-height: 100%; margin: 0; }
+    body {
+      min-height: 100dvh; color: #fff; font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(rgba(6, 8, 20, .62), rgba(6, 8, 20, .38)), url("bg.jpg") center / cover fixed;
+    }
+    .detail-page {
+      width: min(100%, 500px); min-height: 100dvh; margin: auto;
+      padding: max(22px, env(safe-area-inset-top)) 20px max(30px, env(safe-area-inset-bottom));
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    .brand img { display: block; width: 150px; height: auto; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.24); border-radius: 999px;
+      background: rgba(8,10,23,.28); color: rgba(255,255,255,.86); font-size: 13px;
+      font-weight: 700; text-decoration: none; box-shadow: inset 0 1px rgba(255,255,255,.1);
+      transition: color 160ms ease, transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+    .back-link::before { content: "←"; color: #c9c1ff; font-size: 16px; line-height: 1; }
+    .back-link:hover, .back-link:focus-visible { border-color: rgba(185,173,255,.62); background: rgba(144,113,255,.18); color: #fff; transform: translateX(-2px); }
+    .page-title {
+      margin: 0 0 7px; font-size: clamp(24px, 6vw, 32px); line-height: 1.1;
+      background: linear-gradient(110deg, #f09ac8, #b9adff 52%, #a9d9e8);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .summary { margin: 0 0 20px; color: rgba(255,255,255,.72); font-size: 14px; }
+    .progress-status { margin: 0 0 20px; }
+    .progress-label { display: flex; justify-content: space-between; margin-bottom: 7px; color: rgba(255,255,255,.76); font-size: 12px; }
+    .progress-track { height: 7px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.14); }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(110deg, #ea4897, #9071ff 52%, #3db9de); transition: width 180ms ease; }
+    .subject-list { display: grid; gap: 14px; }
+      .manage-exam-button {
+        display: inline-flex; margin: 0 0 20px; padding: 9px 14px; border: 1px solid rgba(255,255,255,.24);
+        border-radius: 999px; background: linear-gradient(110deg, rgba(234,72,151,.28), rgba(144,113,255,.22) 48%, rgba(61,185,222,.28));
+        color: rgba(255,255,255,.9); font-size: 12px; font-weight: 700; text-decoration: none;
+        box-shadow: 0 6px 16px rgba(7,5,22,.18), inset 0 1px rgba(255,255,255,.12);
+        transition: transform 160ms ease, filter 160ms ease;
+      }
+      .manage-exam-button:hover, .manage-exam-button:focus-visible { transform: translateY(-2px); filter: brightness(1.12); }
+    .subject-card {
+      position: relative; isolation: isolate; padding: 17px; border: 1px solid rgba(255,255,255,.22); border-radius: 22px;
+      background: transparent; box-shadow: 0 8px 20px rgba(7,5,22,.2), inset 0 1px rgba(255,255,255,.1);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .subject-card::before {
+      content: ""; position: absolute; z-index: -1; inset: 9px -7px -9px; border-radius: inherit;
+      background: linear-gradient(110deg, rgba(234,72,151,.34), rgba(144,113,255,.24) 48%, rgba(61,185,222,.32));
+      filter: blur(18px); opacity: .78;
+    }
+    .subject-card h2 { margin: 0 0 12px; font-size: 19px; }
+    .chapter-list { display: grid; gap: 8px; }
+    .chapter-item {
+      display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 12px;
+      background: rgba(8,10,23,.3); color: rgba(255,255,255,.86); font-size: 14px;
+      transition: background 160ms ease, color 160ms ease;
+    }
+    .chapter-item input {
+      appearance: none; flex: 0 0 19px; width: 19px; height: 19px; margin: 0;
+      border: 1px solid rgba(255,255,255,.5); border-radius: 6px; background: rgba(255,255,255,.08);
+      cursor: pointer; transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+    .chapter-item input:hover { border-color: #c9c1ff; transform: scale(1.06); }
+    .chapter-item input:checked { border-color: transparent; background: linear-gradient(135deg, #ea4897, #9071ff 55%, #3db9de); }
+    .chapter-item input:checked::after { content: "✓"; display: block; color: #fff; font-size: 13px; font-weight: 800; line-height: 17px; text-align: center; }
+    .chapter-item:has(input:checked) { background: rgba(144,113,255,.16); color: rgba(255,255,255,.64); }
+    .empty-state { margin: 0; color: rgba(255,255,255,.68); font-size: 14px; }
+    .missing-state { padding-top: 30px; text-align: center; }
+    @media (max-width: 412px) {
+      .detail-page { padding-inline: 18px; }
+      .brand img { width: 142px; }
+      .subject-card { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="detail-page">
+    <header class="topbar">
+      <a class="brand" href="main.html" aria-label="Nudge home"><img src="nudge-logo.svg" alt="Nudge" /></a>
+      <a class="back-link" href="main.html">Back</a>
+    </header>
+    <section id="exam-detail" aria-live="polite"></section>
+  </main>
+  <script>
+    const legacyKey = "nudge-study-plan";
+    const plansKey = "nudge-study-plans";
+    const detail = document.getElementById("exam-detail");
+
+    function getPlans() {
+      try {
+        const savedPlans = JSON.parse(localStorage.getItem(plansKey) || "[]");
+        if (Array.isArray(savedPlans) && savedPlans.length) return savedPlans;
+        const legacyPlan = JSON.parse(localStorage.getItem(legacyKey) || "null");
+        return legacyPlan ? [legacyPlan] : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    const examIndex = Number.parseInt(new URLSearchParams(window.location.search).get("exam"), 10);
+    const plan = getPlans()[examIndex];
+
+    if (!plan) {
+      detail.className = "missing-state";
+      detail.innerHTML = '<p class="empty-state">That exam could not be found.</p>';
+    } else {
+      const title = document.createElement("h1");
+      title.className = "page-title";
+      title.textContent = plan.examName || "Untitled exam";
+      detail.appendChild(title);
+
+      const subjects = Array.isArray(plan.subjects) ? plan.subjects : [];
+      const chapterCount = subjects.reduce((total, subject) => total + (Array.isArray(subject.chapters) ? subject.chapters.length : 0), 0);
+      const summary = document.createElement("p");
+      summary.className = "summary";
+      summary.textContent = `${subjects.length} subject${subjects.length === 1 ? "" : "s"} · ${chapterCount} chapter${chapterCount === 1 ? "" : "s"}`;
+      detail.appendChild(summary);
+
+      const manageButton = document.createElement("a");
+      manageButton.className = "manage-exam-button";
+      manageButton.href = `index.html?add-exam=1&edit=${examIndex}`;
+      manageButton.textContent = "Add subjects / chapters";
+      detail.appendChild(manageButton);
+
+      const progressStatus = document.createElement("div");
+      progressStatus.className = "progress-status";
+      progressStatus.innerHTML = '<div class="progress-label"><span>Chapter progress</span><span class="progress-count">0 / 0</span></div><div class="progress-track"><div class="progress-fill"></div></div>';
+      detail.appendChild(progressStatus);
+      const progressCount = progressStatus.querySelector(".progress-count");
+      const progressFill = progressStatus.querySelector(".progress-fill");
+
+      const subjectList = document.createElement("section");
+      subjectList.className = "subject-list";
+      const updateProgress = () => {
+        const completed = subjectList.querySelectorAll("input:checked").length;
+        progressCount.textContent = `${completed} / ${chapterCount}`;
+        progressFill.style.width = chapterCount ? `${(completed / chapterCount) * 100}%` : "0%";
+      };
+      subjects.forEach((subject) => {
+        const subjectCard = document.createElement("article");
+        subjectCard.className = "subject-card";
+        const subjectTitle = document.createElement("h2");
+        subjectTitle.textContent = subject.name || "Untitled subject";
+        subjectCard.appendChild(subjectTitle);
+
+        const chapters = Array.isArray(subject.chapters) ? subject.chapters : [];
+        if (!chapters.length) {
+          const emptyText = document.createElement("p");
+          emptyText.className = "empty-state";
+          emptyText.textContent = "No chapters added yet.";
+          subjectCard.appendChild(emptyText);
+        } else {
+          const chapterList = document.createElement("div");
+          chapterList.className = "chapter-list";
+          chapters.forEach((chapter) => {
+            const label = document.createElement("label");
+            label.className = "chapter-item";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.addEventListener("change", updateProgress);
+            const chapterText = document.createElement("span");
+            chapterText.textContent = chapter;
+            label.append(checkbox, chapterText);
+            chapterList.appendChild(label);
+          });
+          subjectCard.appendChild(chapterList);
+        }
+        subjectList.appendChild(subjectCard);
+      });
+      detail.appendChild(subjectList);
+      updateProgress();
+    }
+  </script>
+</body>
+</html>
