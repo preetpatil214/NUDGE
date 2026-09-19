@@ -20,9 +20,10 @@
     .brand img { display: block; width: 150px; height: auto; }
     .welcome {
       margin: 0; margin-right: 10px; color: transparent; font-size: 14px; font-weight: 700; text-align: right;
-      background: linear-gradient(110deg, #fff 20%, #c9c1ff 45%, #a9d9e8 60%, #fff 80%); background-size: 220% auto;
+      background: linear-gradient(105deg, #fff 8%, #f09ac8 28%, #b9adff 48%, #7ed8e8 68%, #fff 88%); background-size: 260% auto;
       -webkit-background-clip: text; background-clip: text;
-      animation: welcome-in 700ms ease-out both, welcome-glow 3s ease-in-out 700ms infinite, welcome-shine 4s linear 1s infinite;
+      filter: drop-shadow(0 0 8px rgba(185,173,255,.18));
+      animation: welcome-in 700ms cubic-bezier(.2,.8,.2,1) both, welcome-glow 2.8s ease-in-out 700ms infinite, welcome-shine 3.2s linear 1s infinite;
     }
     .page-title { margin: 0 0 16px; font-size:17px; font-style:italic; font-weight:600; background: linear-gradient(110deg, #f09ac8, #b9adff 52%, #a9d9e8); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .exam-list { display: grid; gap: 13px; }
@@ -84,12 +85,12 @@
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes welcome-glow {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.18); }
+      0%, 100% { filter: brightness(1) drop-shadow(0 0 6px rgba(185,173,255,.16)); }
+      50% { filter: brightness(1.24) drop-shadow(0 0 11px rgba(185,173,255,.42)); }
     }
     @keyframes welcome-shine {
-      0%, 35% { background-position: 0% 50%; }
-      65%, 100% { background-position: 100% 50%; }
+      0%, 25% { background-position: 0% 50%; }
+      75%, 100% { background-position: 100% 50%; }
     }
     @media (prefers-reduced-motion: reduce) {
       .empty-state, .empty-state::after, .welcome { animation: none; }
