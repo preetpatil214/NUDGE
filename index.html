@@ -568,13 +568,15 @@
             const chapterChip = document.createElement("div");
             chapterChip.className = "chapter-chip";
 
+            const chapterName = typeof chapter === "string" ? chapter : chapter.name;
+
             const chapterText = document.createElement("span");
-            chapterText.textContent = chapter;
+            chapterText.textContent = chapterName;
 
             const removeChapter = document.createElement("button");
             removeChapter.type = "button";
             removeChapter.textContent = "×";
-            removeChapter.setAttribute("aria-label", `Remove ${chapter}`);
+            removeChapter.setAttribute("aria-label", `Remove ${chapterName}`);
 
             removeChapter.addEventListener("click", (event) => {
               event.stopPropagation();
@@ -602,7 +604,13 @@
         editableSubjects.forEach((subject) => {
           studySubjects.push({
             name: subject.name,
-            chapters: Array.isArray(subject.chapters) ? [...subject.chapters] : []
+            chapters: Array.isArray(subject.chapters)
+              ? subject.chapters.map((chapter) =>
+                typeof chapter === "string"
+                  ? { name: chapter, notes: [] }
+                  : { name: chapter.name, notes: Array.isArray(chapter.notes) ? [...chapter.notes] : [] }
+              )
+              : []
           });
         });
         activeSubjectIndex = studySubjects.length ? studySubjects.length - 1 : -1;
@@ -660,7 +668,7 @@
       const activeSubject = studySubjects[activeSubjectIndex];
 
       const isDuplicate = activeSubject.chapters.some(
-        (chapter) => chapter.toLowerCase() === chapterName.toLowerCase()
+        (chapter) => (typeof chapter === "string" ? chapter : chapter.name).toLowerCase() === chapterName.toLowerCase()
       );
 
       if (isDuplicate) {
@@ -668,7 +676,7 @@
         return;
       }
 
-      activeSubject.chapters.push(chapterName);
+      activeSubject.chapters.push({ name: chapterName, notes: [] });
       chapterInput.value = "";
       formMessage.textContent = "";
       renderSubjects();

@@ -83,7 +83,15 @@
       background: rgba(8,10,23,.3); color: rgba(255,255,255,.86); font-size: 14px;
       transition: background 160ms ease, color 160ms ease;
     }
-    .chapter-item span { flex: 1; min-width: 0; }
+    .chapter-info { display: grid; flex: 1 1 auto; gap: 5px; min-width: 0; }
+    .chapter-item .chapter-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .chapter-notes { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+    .chapter-note-badge { display: inline-flex; align-items: center; gap: 5px; max-width: 155px; padding: 4px 6px 4px 8px; border: 1px solid rgba(169,217,232,.3); border-radius: 6px; background: linear-gradient(110deg, rgba(234,72,151,.14), rgba(144,113,255,.18) 52%, rgba(61,185,222,.14)); color: rgba(232,246,255,.88); font-size: 10px; font-weight: 700; letter-spacing: .01em; line-height: 1.1; }
+    .chapter-note-badge::before { content: ""; flex: 0 0 5px; width: 5px; height: 5px; border-radius: 50%; background: #a9d9e8; box-shadow: 0 0 7px rgba(169,217,232,.8); }
+    .clear-note-button { padding: 0; border: 0; background: transparent; color: rgba(225,249,255,.58); cursor: pointer; font: inherit; font-size: 12px; line-height: 1; }
+    .clear-note-button:hover, .clear-note-button:focus-visible { color: #fff; }
+    .add-note-button { flex: 0 0 auto; padding: 5px 7px; border: 1px solid rgba(201,193,255,.34); border-radius: 7px; background: rgba(144,113,255,.14); color: rgba(231,226,255,.9); cursor: pointer; font: inherit; font-size: 10px; font-weight: 700; }
+    .add-note-button:hover, .add-note-button:focus-visible { border-color: rgba(201,193,255,.72); background: rgba(144,113,255,.28); }
     .chapter-item input {
       appearance: none; flex: 0 0 19px; width: 19px; height: 19px; margin: 0;
       border: 1px solid rgba(255,255,255,.5); border-radius: 6px; background: rgba(255,255,255,.08);
@@ -95,6 +103,27 @@
     .chapter-item:has(input:checked) { background: rgba(144,113,255,.16); color: rgba(255,255,255,.64); }
     .empty-state { margin: 0; color: rgba(255,255,255,.68); font-size: 14px; }
     .missing-state { padding-top: 30px; text-align: center; }
+    .note-modal-backdrop { position: fixed; z-index: 10; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(5,7,18,.68); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .note-modal { position: relative; width: min(100%, 470px); max-height: min(640px, 90dvh); overflow: auto; scrollbar-width: none; padding: 24px; border: 1px solid rgba(201,193,255,.34); border-radius: 22px; background: linear-gradient(145deg, rgba(27,22,55,.97), rgba(14,25,49,.97)); box-shadow: 0 24px 70px rgba(4,3,18,.58), 0 0 34px rgba(144,113,255,.16), inset 0 1px rgba(255,255,255,.14); }
+    .note-modal::-webkit-scrollbar { display: none; }
+    .note-modal::before { content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 2px; border-radius: 999px; background: linear-gradient(90deg, #ea4897, #9071ff 52%, #3db9de); opacity: .9; }
+    .note-modal-kicker { margin: 0 0 6px; color: #a9d9e8; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .note-modal h2 { margin: 0; overflow: hidden; background: linear-gradient(110deg, #f09ac8, #c9c1ff 54%, #a9d9e8); -webkit-background-clip: text; background-clip: text; color: transparent; text-overflow: ellipsis; white-space: nowrap; font-size: 23px; line-height: 1.15; }
+    .note-modal-hint { margin: 7px 0 18px; color: rgba(255,255,255,.62); font-size: 12px; }
+    .note-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+    .note-option { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 8px 9px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: rgba(255,255,255,.055); color: rgba(255,255,255,.82); cursor: pointer; font-size: 12px; line-height: 1.2; transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease; }
+    .note-option:hover { border-color: rgba(201,193,255,.38); background: rgba(144,113,255,.13); transform: translateY(-1px); }
+    .note-option:has(input:checked) { border-color: rgba(169,217,232,.42); background: linear-gradient(110deg, rgba(234,72,151,.2), rgba(144,113,255,.24) 52%, rgba(61,185,222,.18)); color: #fff; }
+    .note-option input { appearance: none; flex: 0 0 17px; width: 17px; height: 17px; margin: 0; border: 1px solid rgba(255,255,255,.42); border-radius: 5px; background: rgba(8,10,23,.3); cursor: pointer; }
+    .note-option input:checked { border-color: transparent; background: linear-gradient(135deg, #ea4897, #9071ff 55%, #3db9de); }
+    .note-option input:checked::after { content: "✓"; display: block; color: #fff; font-size: 12px; font-weight: 800; line-height: 16px; text-align: center; }
+    .note-modal-message { min-height: 18px; margin: 11px 0 0; color: #ffc1d4; font-size: 11px; }
+    .note-modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 11px; padding-top: 13px; border-top: 1px solid rgba(255,255,255,.1); }
+    .note-modal-actions button { padding: 8px 13px; border: 1px solid rgba(255,255,255,.2); border-radius: 9px; background: rgba(255,255,255,.07); color: rgba(255,255,255,.78); cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; transition: filter 160ms ease, transform 160ms ease, border-color 160ms ease; }
+    .note-modal-actions .note-modal-save { border-color: rgba(201,193,255,.5); background: linear-gradient(110deg, rgba(234,72,151,.65), rgba(144,113,255,.72) 52%, rgba(61,185,222,.62)); color: #fff; box-shadow: 0 5px 14px rgba(80,54,160,.22); }
+    .note-modal-actions button:hover, .note-modal-actions button:focus-visible { border-color: rgba(255,255,255,.48); filter: brightness(1.12); transform: translateY(-1px); }
+    body:has(.note-modal-backdrop) { overflow: hidden; }
+    @media (max-width: 460px) { .note-modal { padding: 21px; } .note-options { grid-template-columns: 1fr; } }
     @media (max-width: 412px) {
       .detail-page { padding-inline: 18px; }
       .brand img { width: 142px; }
@@ -133,6 +162,81 @@
     function savePlans() {
       localStorage.setItem(plansKey, JSON.stringify(plans));
       localStorage.removeItem(legacyKey);
+    }
+
+    const noteOptions = [
+      "Completed in Class", "Completed in School", "Self-Study Pending",
+      "Notes Written & Ready", "Formula Sheet Needed", "Questions Pending",
+      "Important for Exam", "Needs Revision", "Doubts to Clear",
+      "PYQs Solved", "First Read Done"
+    ];
+
+    function normalizeChapter(chapter) {
+      if (typeof chapter === "string") return { name: chapter, notes: [] };
+      return {
+        name: chapter?.name || "Untitled chapter",
+        notes: Array.isArray(chapter?.notes) ? chapter.notes.filter((note) => noteOptions.includes(note)).slice(0, 3) : []
+      };
+    }
+
+    function showNoteModal(chapter) {
+      const backdrop = document.createElement("div");
+      backdrop.className = "note-modal-backdrop";
+      backdrop.innerHTML = `
+        <section class="note-modal" role="dialog" aria-modal="true" aria-labelledby="note-modal-title">
+          <p class="note-modal-kicker">Chapter status</p>
+          <h2 id="note-modal-title"></h2>
+          <p class="note-modal-hint">Add up to 3 short status tags.</p>
+          <div class="note-options"></div>
+          <p class="note-modal-message" role="status"></p>
+          <div class="note-modal-actions">
+            <button class="note-modal-save" type="button">Save tags</button>
+          </div>
+        </section>
+      `;
+      const title = backdrop.querySelector("#note-modal-title");
+      const options = backdrop.querySelector(".note-options");
+      const message = backdrop.querySelector(".note-modal-message");
+      const saveButton = backdrop.querySelector(".note-modal-save");
+      const selectedNotes = new Set(chapter.notes);
+      title.textContent = chapter.name;
+
+      noteOptions.forEach((note) => {
+        const label = document.createElement("label");
+        label.className = "note-option";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = note;
+        checkbox.checked = selectedNotes.has(note);
+        checkbox.addEventListener("change", () => {
+          if (checkbox.checked && selectedNotes.size >= 3) {
+            checkbox.checked = false;
+            message.textContent = "Choose up to 3 tags per chapter.";
+            return;
+          }
+          if (checkbox.checked) selectedNotes.add(note);
+          else selectedNotes.delete(note);
+          message.textContent = "";
+        });
+        label.append(checkbox, document.createTextNode(note));
+        options.appendChild(label);
+      });
+
+      saveButton.addEventListener("click", () => {
+        if (!selectedNotes.size) {
+          message.textContent = "Select at least 1 tag, or remove tags from the chapter line.";
+          return;
+        }
+        chapter.notes = [...selectedNotes];
+        savePlans();
+        backdrop.remove();
+        window.location.reload();
+      });
+      backdrop.addEventListener("click", (event) => {
+        if (event.target === backdrop) backdrop.remove();
+      });
+      document.body.appendChild(backdrop);
+      options.querySelector("input")?.focus();
     }
 
     if (!plan) {
@@ -211,19 +315,54 @@
         } else {
           const chapterList = document.createElement("div");
           chapterList.className = "chapter-list";
-          chapters.forEach((chapter, chapterIndex) => {
+          chapters.forEach((rawChapter, chapterIndex) => {
+            const chapter = normalizeChapter(rawChapter);
+            subject.chapters[chapterIndex] = chapter;
             const label = document.createElement("label");
             label.className = "chapter-item";
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.addEventListener("change", updateProgress);
             const chapterText = document.createElement("span");
-            chapterText.textContent = chapter;
+            chapterText.className = "chapter-name";
+            chapterText.textContent = chapter.name;
+            const chapterInfo = document.createElement("span");
+            chapterInfo.className = "chapter-info";
+            const noteList = document.createElement("span");
+            noteList.className = "chapter-notes";
+            chapter.notes.forEach((note) => {
+              const badge = document.createElement("span");
+              badge.className = "chapter-note-badge";
+              badge.textContent = note;
+              const clearNote = document.createElement("button");
+              clearNote.type = "button";
+              clearNote.className = "clear-note-button";
+              clearNote.textContent = "×";
+              clearNote.setAttribute("aria-label", `Remove ${note} from ${chapter.name}`);
+              clearNote.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                chapter.notes = chapter.notes.filter((item) => item !== note);
+                savePlans();
+                window.location.reload();
+              });
+              badge.appendChild(clearNote);
+              noteList.appendChild(badge);
+            });
+            const addNoteButton = document.createElement("button");
+            addNoteButton.type = "button";
+            addNoteButton.className = "add-note-button";
+            addNoteButton.textContent = chapter.notes.length ? "Edit notes" : "Add note";
+            addNoteButton.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              showNoteModal(chapter);
+            });
             const removeChapterButton = document.createElement("button");
             removeChapterButton.className = "remove-chapter-button";
             removeChapterButton.type = "button";
             removeChapterButton.textContent = "×";
-            removeChapterButton.setAttribute("aria-label", `Remove ${chapter}`);
+            removeChapterButton.setAttribute("aria-label", `Remove ${chapter.name}`);
             removeChapterButton.addEventListener("click", (event) => {
               event.preventDefault();
               event.stopPropagation();
@@ -231,7 +370,8 @@
               savePlans();
               window.location.reload();
             });
-            label.append(checkbox, chapterText, removeChapterButton);
+            chapterInfo.append(chapterText, noteList);
+            label.append(checkbox, chapterInfo, addNoteButton, removeChapterButton);
             chapterList.appendChild(label);
           });
           subjectCard.appendChild(chapterList);
