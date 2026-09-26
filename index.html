@@ -477,19 +477,24 @@
     const formMessage = document.getElementById("form-message");
     const studentNameInput = document.getElementById("student-name");
     const examNameInput = document.getElementById("exam-name");
-    const taskForm = document.getElementById("task-form");
+        const taskForm = document.getElementById("task-form");
     const taskFormMessage = document.getElementById("task-form-message");
     const taskStorageKey = "nudge-tasks";
 
-    studyForm.hidden = isTaskFlow;
-    taskForm.hidden = !isTaskFlow;
+    // EXPLICIT FORM TOGGLING
     if (isTaskFlow) {
+      studyForm.style.display = "none";
+      taskForm.style.display = "grid";
       document.getElementById("form-title").textContent = "Create a New Task";
       document.getElementById("form-description").textContent = "Add a title and target date for your task.";
-      document.getElementById("form-back-link").hidden = false;
+      document.getElementById("form-back-link").style.display = "inline-flex";
+    } else {
+      studyForm.style.display = "grid";
+      taskForm.style.display = "none";
     }
 
     function getSavedStudentName() {
+
       try {
         const savedPlans = JSON.parse(localStorage.getItem(STUDY_PLANS_STORAGE_KEY) || "[]");
         const plans = Array.isArray(savedPlans) ? savedPlans : [];
@@ -510,9 +515,15 @@
       }
     }
 
-    const savedStudentName = getSavedStudentName();
-    document.getElementById("form-back-link").hidden = !isEditingExam && !isTaskFlow;
+        const savedStudentName = getSavedStudentName();
+    if (!isEditingExam && !isTaskFlow) {
+      document.getElementById("form-back-link").style.display = "none";
+    } else {
+      document.getElementById("form-back-link").style.display = "inline-flex";
+    }
+
     if (savedStudentName) {
+
       studentNameInput.value = savedStudentName;
       studentNameInput.hidden = true;
       document.querySelector('label[for="student-name"]').hidden = true;
