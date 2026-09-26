@@ -1,3 +1,4 @@
+(() => {
 let deferredInstallPrompt;
 const installButton = document.querySelector('#install-button');
 const subjectEntry = document.querySelector('#subject-entry');
@@ -78,13 +79,15 @@ function addSubject() {
   chapterEntry.focus();
 }
 
-addSubjectButton.addEventListener('click', addSubject);
-subjectEntry.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    addSubject();
-  }
-});
+if (addSubjectButton && subjectEntry) {
+  addSubjectButton.addEventListener('click', addSubject);
+  subjectEntry.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      addSubject();
+    }
+  });
+}
 
 function isNudgeInstalled() {
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -124,3 +127,4 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+})();

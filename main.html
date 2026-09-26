@@ -13,7 +13,7 @@
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body { min-height: 100%; margin: 0; }
     body {
-      min-height: 100dvh; overflow: hidden; color: #fff; font-family: Inter, Arial, sans-serif;
+      min-height: 100dvh; overflow: hidden; color: #fff; font-family: Inter, "SF Pro Display", Arial, sans-serif;
       background: linear-gradient(rgba(6, 8, 20, .62), rgba(6, 8, 20, .38)), url("bg.jpg") center / cover fixed;
     }
     .dashboard {
@@ -50,12 +50,22 @@
     }
     .exam-card:active { transform: scale(.985); }
     .exam-card:focus-visible { outline: 2px solid #b9adff; outline-offset: 4px; }
+    .task-card { cursor: default; }
     .exam-card h2 { margin: 0 0 11px; font-size: 19px; }
     .exam-card p { margin: 0; color: rgba(255,255,255,.73); font-size: 14px; line-height: 1.5; }
+    .task-card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .task-card-heading h2 { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+    .task-date { flex: 0 0 auto; padding-top: 3px; color: #c9c1ff; font-size: 12px; font-weight: 700; }
+    .task-card.is-complete h2 { opacity: .62; text-decoration: line-through; }
+    .task-controls { display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; }
+    .task-control { display: grid; width: 38px; height: 38px; padding: 0; place-items: center; border: 1px solid rgba(201,193,255,.32); border-radius: 12px; background: linear-gradient(110deg,rgba(234,72,151,.2),rgba(144,113,255,.24) 52%,rgba(61,185,222,.2)); color: #fff; cursor: pointer; font: inherit; font-size: 19px; font-weight: 800; box-shadow: inset 0 1px rgba(255,255,255,.1); transition: transform 160ms ease,filter 160ms ease,border-color 160ms ease; }
+    .task-control:hover,.task-control:focus-visible { transform: translateY(-1px); filter: brightness(1.18); border-color: rgba(201,193,255,.68); }
+    .task-control:active { transform: scale(.96); }
     .subject-preview { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
     .subject-chip { padding: 6px 9px; border-radius: 999px; background: rgba(169,163,255,.2); color: #e6e4ff; font-size: 12px; font-weight: 600; }
+    .dashboard-actions { display: flex; justify-content: center; gap: 10px; margin: 28px auto 0; }
     .add-exam-button {
-      display: block; width: fit-content; margin: 28px auto 0; padding: 11px 26px;
+      display: block; width: fit-content; padding: 11px 21px;
       border: 1px solid rgba(255,255,255,.38); border-radius: 999px;
       background: linear-gradient(110deg, rgba(234,72,151,.24), rgba(144,113,255,.2) 52%, rgba(61,185,222,.24));
       color: rgba(255,255,255,.92); font: inherit; font-weight: 700; text-decoration: none; cursor: pointer;
@@ -64,6 +74,36 @@
     }
     .add-exam-button:hover, .add-exam-button:focus-visible { background: linear-gradient(110deg, rgba(234,72,151,.38), rgba(144,113,255,.32) 52%, rgba(61,185,222,.38)); transform: translateY(-2px); box-shadow: 0 9px 22px rgba(144,113,255,.24), inset 0 1px rgba(255,255,255,.18); filter: brightness(1.08); }
     .add-exam-button:active { transform: scale(.98); }
+    .welcome-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(5,7,18,.76); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .welcome-backdrop[hidden] { display: none; }
+    .welcome-card { position: relative; isolation: isolate; width: min(100%, 410px); padding: 29px; overflow: hidden; border: 1px solid rgba(201,193,255,.34); border-radius: 24px; background: linear-gradient(145deg,rgba(27,22,55,.97),rgba(14,25,49,.97)); box-shadow: 0 24px 70px rgba(4,3,18,.58),0 0 34px rgba(144,113,255,.16),inset 0 1px rgba(255,255,255,.14); color: #fff; }
+    .welcome-card::before { content: ""; position: absolute; z-index: -1; top: 0; left: 26px; right: 26px; height: 2px; border-radius: 999px; background: linear-gradient(90deg,#ea4897,#9071ff 52%,#3db9de); }
+    .welcome-card h2 { margin: 0 0 8px; background: linear-gradient(110deg,#f09ac8,#b9adff 52%,#a9d9e8); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 26px; line-height: 1.15; }
+    .welcome-card p { margin: 0 0 22px; color: rgba(255,255,255,.68); font-size: 13px; }
+    .welcome-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .welcome-actions .add-exam-button { width: 100%; padding: 12px 10px; text-align: center; }
+    body.welcome-open { overflow: hidden; }
+    .task-section-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 16px; padding: 12px 14px; border: 1px solid rgba(201,193,255,.22); border-radius: 14px; background: rgba(22,27,58,.42); color: rgba(255,255,255,.92); cursor: pointer; font: inherit; font-weight: 700; box-shadow: inset 0 1px rgba(255,255,255,.08); transition: border-color 160ms ease,background 160ms ease,transform 160ms ease; }
+    .task-section-trigger:hover,.task-section-trigger:focus-visible { border-color: rgba(185,173,255,.56); background: rgba(72,63,130,.38); transform: translateY(-1px); }
+    .task-count { min-width: 27px; padding: 3px 7px; border: 1px solid rgba(201,193,255,.26); border-radius: 999px; background: rgba(144,113,255,.2); color: #ded9ff; font-size: 11px; text-align: center; }
+    .task-drawer-backdrop { position: fixed; z-index: 30; inset: 0; display: flex; justify-content: flex-end; background: rgba(5,7,18,.66); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .task-drawer-backdrop[hidden] { display: none; }
+    .task-drawer { display: flex; flex-direction: column; gap: 16px; width: min(100%, 430px); height: 100dvh; padding: max(22px,env(safe-area-inset-top)) 20px max(20px,env(safe-area-inset-bottom)); border-left: 1px solid rgba(201,193,255,.24); background: linear-gradient(150deg,rgba(23,22,53,.98),rgba(13,20,43,.98)); box-shadow: -20px 0 60px rgba(3,4,20,.42),inset 1px 0 rgba(255,255,255,.06); animation: drawer-in 220ms cubic-bezier(.2,.8,.2,1) both; }
+    .task-drawer-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 13px; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .task-drawer-header h2 { margin: 0; font-size: 22px; background: linear-gradient(110deg,#f09ac8,#b9adff 52%,#a9d9e8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .task-drawer-close { display: grid; width: 40px; height: 40px; padding: 0; place-items: center; border: 1px solid rgba(201,193,255,.28); border-radius: 12px; background: rgba(255,255,255,.06); color: #fff; cursor: pointer; font: inherit; font-size: 24px; line-height: 1; }
+    .task-list { display: grid; align-content: start; gap: 9px; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+    .task-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 10px; padding: 11px 12px; border: 1px solid rgba(201,193,255,.16); border-radius: 14px; background: rgba(51,56,101,.32); box-shadow: inset 0 1px rgba(255,255,255,.06); }
+    .task-row-copy { display: grid; gap: 4px; min-width: 0; }
+    .task-row h3 { margin: 0; overflow-wrap: anywhere; color: rgba(255,255,255,.94); font-size: 14px; line-height: 1.3; }
+    .task-row time { color: rgba(201,193,255,.78); font-size: 11px; }
+    .task-row.is-complete h3 { opacity: .58; text-decoration: line-through; }
+    .task-row .task-controls { margin: 0; }
+    .task-row .task-control { width: 34px; height: 34px; border-radius: 10px; }
+    .task-list-empty { margin: 8px 2px; color: rgba(255,255,255,.62); font-size: 13px; line-height: 1.5; }
+    .task-drawer-add { flex: 0 0 auto; width: 100%; text-align: center; }
+    body.drawer-open { overflow: hidden; }
+    @keyframes drawer-in { from { opacity: .7; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
     .empty-state {
       position: relative; margin: 22px 0 0; padding: 8px 4px 14px; overflow: hidden;
       color: transparent; font-size: 16px; font-style: italic; font-weight: 600; text-align: center;
@@ -105,7 +145,10 @@
       .brand img { width: 142px; }
       .welcome { font-size: 13px; margin-right: 0; }
       .exam-card { padding: 17px; }
-      .add-exam-button { margin-top: 26px; }
+      .dashboard-actions { margin-top: 26px; gap: 8px; }
+      .add-exam-button { padding-inline: 17px; font-size: 13px; }
+      .welcome-card { padding: 24px; }
+      .welcome-actions { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -117,13 +160,55 @@
     </header>
     <h1 class="page-title" id="page-title">Your academic overview</h1>
     <section class="exam-list" id="exam-list" aria-live="polite"></section>
-    <a class="add-exam-button" href="index.html?add-exam=1">Add exam</a>
+    <button class="task-section-trigger" id="open-task-drawer" type="button" aria-haspopup="dialog" aria-controls="task-drawer" aria-expanded="false">
+      <span>Tasks</span>
+      <span class="task-count" id="task-count">0</span>
+    </button>
+    <nav class="dashboard-actions" aria-label="Create new item">
+      <a class="add-exam-button" href="index.html?add-exam=1">Add exam</a>
+      <button class="add-exam-button" id="open-task-drawer-bottom" type="button" aria-haspopup="dialog" aria-controls="task-drawer">Add Task</button>
+    </nav>
   </main>
+  <div class="task-drawer-backdrop" id="task-drawer-backdrop" hidden>
+    <aside class="task-drawer" id="task-drawer" role="dialog" aria-modal="true" aria-labelledby="task-drawer-title" tabindex="-1">
+      <header class="task-drawer-header">
+        <h2 id="task-drawer-title">Tasks</h2>
+        <button class="task-drawer-close" id="close-task-drawer" type="button" aria-label="Close tasks">×</button>
+      </header>
+      <section class="task-list" id="task-list" aria-live="polite"></section>
+      <a class="add-exam-button task-drawer-add" href="index.html?add-task=1">Add Task</a>
+    </aside>
+  </div>
+  <div class="welcome-backdrop" id="first-run-welcome" hidden>
+    <section class="welcome-card" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-description">
+      <h2 id="welcome-title">Welcome to Nudge</h2>
+      <p id="welcome-description">What would you like to add first?</p>
+      <div class="welcome-actions">
+        <button class="add-exam-button" type="button" data-start="exam">Add Exam</button>
+        <button class="add-exam-button" type="button" data-start="task">Add Task</button>
+      </div>
+    </section>
+  </div>
   <script>
     const legacyKey = "nudge-study-plan";
     const plansKey = "nudge-study-plans";
+    const tasksKey = "nudge-tasks";
     const examList = document.getElementById("exam-list");
     const welcomeName = document.getElementById("welcome-name");
+    function getTasks() {
+      try {
+        const savedTasks = JSON.parse(localStorage.getItem(tasksKey) || "[]");
+        return Array.isArray(savedTasks) ? savedTasks.map((task) => {
+          const oldItems = Array.isArray(task?.items) ? task.items : [];
+          const previousItemsComplete = oldItems.length > 0 && oldItems.every((item) => item?.completed);
+          return {
+            title: task?.title || task?.name || "Untitled task",
+            date: task?.date || (typeof task?.deadline === "string" ? task.deadline.slice(0, 10) : ""),
+            completed: Boolean(task?.completed || previousItemsComplete)
+          };
+        }) : [];
+      } catch (error) { return []; }
+    }
     function getPlans() {
       try {
         const savedPlans = JSON.parse(localStorage.getItem(plansKey) || "[]");
@@ -133,11 +218,33 @@
       } catch (error) { return []; }
     }
     const plans = getPlans();
+    const tasks = getTasks();
     welcomeName.textContent = plans[0]?.studentName ? `Hey, ${plans[0].studentName} !` : "";
-    if (!plans.length) examList.innerHTML = '<p class="empty-state">No exams added yet.</p>';
-    plans.forEach((plan) => {
+    const onboardingKey = "nudge-onboarding-complete";
+    const firstRunWelcome = document.getElementById("first-run-welcome");
+    try {
+      if (localStorage.getItem(onboardingKey) === "true") {
+        firstRunWelcome.hidden = true;
+      } else if (plans.length || tasks.length) {
+        localStorage.setItem(onboardingKey, "true");
+      } else {
+        firstRunWelcome.hidden = false;
+        document.body.classList.add("welcome-open");
+        firstRunWelcome.querySelectorAll("[data-start]").forEach((button) => {
+          button.addEventListener("click", () => {
+            localStorage.setItem(onboardingKey, "true");
+            window.location.href = button.dataset.start === "task" ? "index.html?add-task=1" : "index.html?add-exam=1";
+          });
+        });
+        firstRunWelcome.querySelector("[data-start]").focus();
+      }
+    } catch (error) {
+      firstRunWelcome.hidden = true;
+      document.body.classList.remove("welcome-open");
+    }
+    if (!plans.length && !tasks.length) examList.innerHTML = '<p class="empty-state">No exams or tasks added yet.</p>';
+    plans.forEach((plan, planIndex) => {
       const card = document.createElement("article"); card.className = "exam-card";
-      const planIndex = plans.indexOf(plan);
       card.tabIndex = 0;
       card.setAttribute("role", "link");
       card.setAttribute("aria-label", `Open ${plan.examName || "exam"}`);
@@ -160,6 +267,78 @@
       });
       card.append(title, summary, preview); examList.appendChild(card);
     });
+    function saveTasks() {
+      try {
+        localStorage.setItem(tasksKey, JSON.stringify(tasks));
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function updateEmptyState() {
+      const emptyState = examList.querySelector(".empty-state");
+      if (!plans.length && !tasks.length && !emptyState) {
+        const message = document.createElement("p");
+        message.className = "empty-state";
+        message.textContent = "No exams or tasks added yet.";
+        examList.appendChild(message);
+      } else if ((plans.length || tasks.length) && emptyState) {
+        emptyState.remove();
+      }
+    }
+
+    function renderTasks() {
+      examList.querySelectorAll(".task-card").forEach((card) => card.remove());
+      tasks.forEach((task, taskIndex) => {
+        const card = document.createElement("article");
+        card.className = `exam-card task-card${task.completed ? " is-complete" : ""}`;
+        const heading = document.createElement("div");
+        heading.className = "task-card-heading";
+        const title = document.createElement("h2");
+        title.textContent = task.title;
+        const date = document.createElement("time");
+        date.className = "task-date";
+        date.dateTime = task.date;
+        const parsedDate = task.date ? new Date(`${task.date}T00:00:00`) : null;
+        date.textContent = parsedDate && !Number.isNaN(parsedDate.getTime())
+          ? parsedDate.toLocaleDateString([], { dateStyle: "medium" })
+          : "No date";
+        heading.append(title, date);
+
+        const controls = document.createElement("div");
+        controls.className = "task-controls";
+        const completeButton = document.createElement("button");
+        completeButton.className = "task-control";
+        completeButton.type = "button";
+        completeButton.textContent = "✓";
+        completeButton.setAttribute("aria-label", `${task.completed ? "Mark incomplete" : "Mark complete"}: ${task.title}`);
+        completeButton.setAttribute("aria-pressed", String(task.completed));
+        completeButton.addEventListener("click", () => {
+          task.completed = !task.completed;
+          if (!saveTasks()) task.completed = !task.completed;
+          renderTasks();
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "task-control";
+        deleteButton.type = "button";
+        deleteButton.textContent = "×";
+        deleteButton.setAttribute("aria-label", `Delete task: ${task.title}`);
+        deleteButton.addEventListener("click", () => {
+          const [removedTask] = tasks.splice(taskIndex, 1);
+          if (!saveTasks()) tasks.splice(taskIndex, 0, removedTask);
+          renderTasks();
+          updateEmptyState();
+        });
+        controls.append(completeButton, deleteButton);
+        card.append(heading, controls);
+        examList.appendChild(card);
+      });
+    }
+
+    renderTasks();
+    updateEmptyState();
   </script>
   <script src="/install.js" defer></script>
 </body>
