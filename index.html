@@ -452,7 +452,7 @@
     const isEditingExam = Number.isInteger(editExamIndex) && editExamIndex >= 0;
      const isTaskFlow = queryParams.has("add-task");
 
-        if (!isAddingExam && !isTaskFlow) {
+            if (!isAddingExam && !isTaskFlow) {
       try {
         const hasData = localStorage.getItem(STUDY_PLANS_STORAGE_KEY) || 
                         localStorage.getItem(STUDY_PLAN_STORAGE_KEY) || 
@@ -463,8 +463,10 @@
       } catch (error) {
         console.warn("Unable to check saved Nudge data.", error);
       }
-      window.location.replace("/main.html");
+      window.location.replace("main.html");
+      return;
     }
+
 
 
     const studyForm = document.getElementById("study-form");
