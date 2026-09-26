@@ -219,6 +219,25 @@
     }
     const plans = getPlans();
     const tasks = getTasks();
+    const taskList = document.getElementById("task-list");
+    const taskCountDisplay = document.getElementById("task-count");
+    const taskDrawerBackdrop = document.getElementById("task-drawer-backdrop");
+    const openDrawerBtns = [document.getElementById("open-task-drawer"), document.getElementById("open-task-drawer-bottom")];
+    const closeDrawerBtn = document.getElementById("close-task-drawer");
+
+    function toggleDrawer(open) {
+      taskDrawerBackdrop.hidden = !open;
+      document.body.classList.toggle("drawer-open", open);
+      if (open) {
+        document.getElementById("task-drawer").focus();
+        renderTasks();
+      }
+    }
+
+    openDrawerBtns.forEach(btn => btn?.addEventListener("click", () => toggleDrawer(true)));
+    closeDrawerBtn?.addEventListener("click", () => toggleDrawer(false));
+    taskDrawerBackdrop?.addEventListener("click", (e) => { if (e.target === taskDrawerBackdrop) toggleDrawer(false); });
+
     welcomeName.textContent = plans[0]?.studentName ? `Hey, ${plans[0].studentName} !` : "";
     const onboardingKey = "nudge-onboarding-complete";
     const firstRunWelcome = document.getElementById("first-run-welcome");
@@ -289,51 +308,56 @@
     }
 
     function renderTasks() {
-      examList.querySelectorAll(".task-card").forEach((card) => card.remove());
+      taskList.innerHTML = "";
+      taskCountDisplay.textContent = tasks.length;
+
+      if (tasks.length === 0) {
+        taskList.innerHTML = '<p class="task-list-empty">No tasks yet. Add one to stay on track!</p>';
+        return;
+      }
+
       tasks.forEach((task, taskIndex) => {
-        const card = document.createElement("article");
-        card.className = `exam-card task-card${task.completed ? " is-complete" : ""}`;
-        const heading = document.createElement("div");
-        heading.className = "task-card-heading";
-        const title = document.createElement("h2");
+        const row = document.createElement("div");
+        row.className = `task-row${task.completed ? " is-complete" : ""}`;
+
+        const copy = document.createElement("div");
+        copy.className = "task-row-copy";
+        const title = document.createElement("h3");
         title.textContent = task.title;
         const date = document.createElement("time");
-        date.className = "task-date";
-        date.dateTime = task.date;
         const parsedDate = task.date ? new Date(`${task.date}T00:00:00`) : null;
         date.textContent = parsedDate && !Number.isNaN(parsedDate.getTime())
           ? parsedDate.toLocaleDateString([], { dateStyle: "medium" })
           : "No date";
-        heading.append(title, date);
+        copy.append(title, date);
 
         const controls = document.createElement("div");
         controls.className = "task-controls";
-        const completeButton = document.createElement("button");
-        completeButton.className = "task-control";
-        completeButton.type = "button";
-        completeButton.textContent = "✓";
-        completeButton.setAttribute("aria-label", `${task.completed ? "Mark incomplete" : "Mark complete"}: ${task.title}`);
-        completeButton.setAttribute("aria-pressed", String(task.completed));
-        completeButton.addEventListener("click", () => {
-          task.completed = !task.completed;
-          if (!saveTasks()) task.completed = !task.completed;
-          renderTasks();
-        });
 
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "task-control";
-        deleteButton.type = "button";
-        deleteButton.textContent = "×";
-        deleteButton.setAttribute("aria-label", `Delete task: ${task.title}`);
-        deleteButton.addEventListener("click", () => {
-          const [removedTask] = tasks.splice(taskIndex, 1);
-          if (!saveTasks()) tasks.splice(taskIndex, 0, removedTask);
+        const completeBtn = document.createElement("button");
+        completeBtn.className = "task-control";
+        completeBtn.innerHTML = "✓";
+        completeBtn.setAttribute("aria-label", "Toggle complete");
+        completeBtn.onclick = () => {
+          task.completed = !task.completed;
+          saveTasks();
+          renderTasks();
+        };
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "task-control";
+        deleteBtn.innerHTML = "×";
+        deleteBtn.setAttribute("aria-label", "Delete task");
+        deleteBtn.onclick = () => {
+          tasks.splice(taskIndex, 1);
+          saveTasks();
           renderTasks();
           updateEmptyState();
-        });
-        controls.append(completeButton, deleteButton);
-        card.append(heading, controls);
-        examList.appendChild(card);
+        };
+
+        controls.append(completeBtn, deleteBtn);
+        row.append(copy, controls);
+        taskList.appendChild(row);
       });
     }
 
