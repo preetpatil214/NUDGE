@@ -166,7 +166,7 @@
     </button>
     <nav class="dashboard-actions" aria-label="Create new item">
       <a class="add-exam-button" href="index.html?add-exam=1">Add exam</a>
-      <button class="add-exam-button" id="open-task-drawer-bottom" type="button" aria-haspopup="dialog" aria-controls="task-drawer">Add Task</button>
+      <a class="add-exam-button" href="index.html?add-task=1">Add Task</a>
     </nav>
   </main>
   <div class="task-drawer-backdrop" id="task-drawer-backdrop" hidden>
@@ -222,7 +222,7 @@
     const taskList = document.getElementById("task-list");
     const taskCountDisplay = document.getElementById("task-count");
     const taskDrawerBackdrop = document.getElementById("task-drawer-backdrop");
-    const openDrawerBtns = [document.getElementById("open-task-drawer"), document.getElementById("open-task-drawer-bottom")];
+    const openDrawerBtns = [document.getElementById("open-task-drawer")];
     const closeDrawerBtn = document.getElementById("close-task-drawer");
 
     function toggleDrawer(open) {
