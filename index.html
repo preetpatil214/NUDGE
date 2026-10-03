@@ -464,8 +464,7 @@
         console.warn("Unable to check saved Nudge data.", error);
       }
       window.location.replace("main.html");
-      return;
-    }
+    } else {
 
 
 
@@ -486,12 +485,14 @@
     // EXPLICIT FORM TOGGLING
     if (isTaskFlow) {
       studyForm.style.display = "none";
+      taskForm.hidden = false;
       taskForm.style.display = "grid";
       document.getElementById("form-title").textContent = "Create a New Task";
       document.getElementById("form-description").textContent = "Add a title and target date for your task.";
       document.getElementById("form-back-link").style.display = "inline-flex";
     } else {
       studyForm.style.display = "grid";
+      taskForm.hidden = true;
       taskForm.style.display = "none";
     }
 
@@ -797,7 +798,7 @@
         }
         localStorage.setItem(STUDY_PLANS_STORAGE_KEY, JSON.stringify(existingPlans));
         localStorage.removeItem(STUDY_PLAN_STORAGE_KEY);
-        window.location.replace("/main.html");
+        window.location.replace("main.html");
       } catch (error) {
         formMessage.textContent = "We couldn't save your plan. Please try again.";
         console.error("Unable to save the study plan.", error);
@@ -818,7 +819,7 @@
         const tasks = Array.isArray(storedTasks) ? storedTasks : [];
         tasks.push({ title, date, completed: false });
         localStorage.setItem(taskStorageKey, JSON.stringify(tasks));
-        window.location.replace("/main.html");
+        window.location.replace("main.html");
       } catch (error) {
         taskFormMessage.textContent = "We couldn't save your task. Please try again.";
         console.error("Unable to save the task.", error);
@@ -826,6 +827,7 @@
     });
 
     updateActiveSubject();
+    }
   </script>
 
   <script src="/app.js" defer></script>
